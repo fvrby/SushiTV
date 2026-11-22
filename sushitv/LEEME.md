@@ -31,12 +31,16 @@ en la raíz (archivo local, no versionado).
 Herramientas ya instaladas en este PC: JDK 25 en `C:\Users\bloai\.jdks\jdk-25.0.5.1+2` y el
 Android SDK en `C:\Users\bloai\Android\Sdk` (referenciado desde `local.properties`).
 
-Versión de lanzamiento, firmada con la llave de SushiTV (sube `VERSION_NAME` y `VERSION_CODE` en
-cada release; esquema `VERSION_CODE = mayor*10000 + menor*100 + parche`):
+Versión de lanzamiento, firmada con la llave de SushiTV. Las versiones van **por fecha**:
+`AAAA.MM.N` (N = número de release dentro del mes) y `VERSION_CODE = AAAAMM*100 + N`. Así nunca
+chocan con las etiquetas de OwnTV (`v1.x`–`v5.x`), que vienen en el clon. Ejemplo para la primera:
 
 ```powershell
-$env:JAVA_HOME = "C:\Users\bloai\.jdks\jdk-25.0.5.1+2"; $env:VERSION_NAME = "1.0.0"; $env:VERSION_CODE = "10000"; .\gradlew.bat :app:assembleStandardRelease
+$env:JAVA_HOME = "C:\Users\bloai\.jdks\jdk-25.0.5.1+2"; $env:VERSION_NAME = "2026.11.1"; $env:VERSION_CODE = "20261101"; .\gradlew.bat :app:assembleStandardRelease
 ```
+
+Cada release en GitHub lleva la etiqueta `v` + `VERSION_NAME` (ej. `v2026.11.1`) y el APK adjunto
+como `sushitv.apk`. No uses `git push --tags`: subiría también las etiquetas de OwnTV.
 
 El APK queda en `app\build\outputs\apk\standard\release\app-standard-release.apk`.
 
