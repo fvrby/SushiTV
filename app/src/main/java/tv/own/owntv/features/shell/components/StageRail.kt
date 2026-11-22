@@ -100,7 +100,16 @@ data class NowPlayingRail(val logoUrl: String?, val audioMode: Boolean, val play
  * SushiTV: a rail entry that opens Live TV on one playlist ("TV chilena", "Películas y series").
  * When the rail is given any, they take Live TV's place in the rail.
  */
-data class RailShortcut(val label: String, val icon: OwnTVIcon, val active: Boolean, val onClick: () -> Unit)
+data class RailShortcut(val label: String, val icon: OwnTVIcon, val active: Boolean, val image: Int? = null, val onClick: () -> Unit)
+
+/** SushiTV: a rail picture icon, rounded like the app's tiles. */
+@Composable
+private fun RailImage(res: Int, size: Int) {
+    androidx.compose.foundation.Image(
+        androidx.compose.ui.res.painterResource(res), contentDescription = null,
+        modifier = Modifier.size(size.mpx).clip(RoundedCornerShape((size / 4).mpx)),
+    )
+}
 
 /** The rail order: Search first, Sports then the Guide right after Live TV, More last. */
 private val StageRailOrder = listOf(
@@ -321,6 +330,7 @@ fun StageRail(
                             namesAlpha = namesAlpha,
                             active = shortcut.active,
                             onClick = shortcut.onClick,
+                            image = shortcut.image,
                             modifier = if (section == focusSection && i == focusIndex) Modifier.focusRequester(selectedItemFocusRequester) else Modifier,
                         )
                     }
@@ -425,6 +435,8 @@ private fun RailItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     accentIcon: Boolean = false,
+    /** SushiTV: a picture icon (res drawable) drawn instead of [icon]. */
+    image: Int? = null,
 ) {
     val a = stageAccent
     val r = 20.mpx
@@ -443,7 +455,7 @@ private fun RailItem(
             else -> StageColors.NavText
         }
         if (!open) {
-            OwnTVIcon(icon, iconTint, Modifier.size(27.mpx))
+            if (image != null) RailImage(image, 34) else OwnTVIcon(icon, iconTint, Modifier.size(27.mpx))
             if (active && !focused) RailActiveDot(Modifier.align(Alignment.CenterEnd).offset(x = 9.mpx))
             return@StageSurface
         }
@@ -452,7 +464,7 @@ private fun RailItem(
             horizontalArrangement = Arrangement.spacedBy(18.mpx),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            OwnTVIcon(icon, iconTint, Modifier.size(26.mpx))
+            if (image != null) RailImage(image, 32) else OwnTVIcon(icon, iconTint, Modifier.size(26.mpx))
             Column(Modifier.weight(1f).graphicsLayer { alpha = namesAlpha() }) {
                 Text(
                     label,

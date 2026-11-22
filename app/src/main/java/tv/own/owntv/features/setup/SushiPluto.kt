@@ -86,8 +86,12 @@ object SushiPluto {
 
         val files = THEMES.associateWith { File(context.filesDir, it.file) }
         val age = System.currentTimeMillis() - prefs.getLong(KEY_BUILT_AT, 0L)
-        val allThere = THEMES.all { t -> files.getValue(t).exists() && sources.any { it.url == files.getValue(t).absolutePath } }
-        if (allThere && age < MAX_AGE_MS && prefs.getInt(KEY_LISTS, 0) >= LISTS_VERSION) return@withLock
+        // Due: the session is getting old or the lists changed -> rewrite and re-sync all of them.
+        // Otherwise only a list that is missing (a failed import) is added, and nothing else is touched,
+        // so a failure never turns into an hourly re-sync of everything.
+        val due = age >= MAX_AGE_MS || prefs.getInt(KEY_LISTS, 0) < LISTS_VERSION
+        val missing = THEMES.filter { t -> !(files.getValue(t).exists() && sources.any { it.url == files.getValue(t).absolutePath }) }
+        if (!due && missing.isEmpty()) return@withLock
 
         val clientId = prefs.getString(KEY_CLIENT, null) ?: UUID.randomUUID().toString().also {
             prefs.edit().putString(KEY_CLIENT, it).apply()
@@ -101,8 +105,8 @@ object SushiPluto {
             write(files.getValue(t), entries)
         }
 
-        var ok = true
         for (t in THEMES) {
+            if (!due && t !in missing) continue
             val path = files.getValue(t).absolutePath
             val name = context.getString(t.nameRes)
             val existing = sources.firstOrNull { it.url == path }
@@ -111,7 +115,7 @@ object SushiPluto {
                 val importer = koin.get<SourceImporter>()
                 importer.useProfile(profileId)
                 importer.m3u(name, path, autoRefresh = PlaylistRefresh.OFF)
-                if (importer.state.value !is SourceImporter.ImportState.Success) ok = false
+                // A failed import is simply missing next time and retried then, on its own.
             } else {
                 if (existing.url != path || existing.name != name) {
                     val dao = koin.get<SourceDao>()
@@ -121,7 +125,7 @@ object SushiPluto {
                 resync(existing)
             }
         }
-        if (ok) prefs.edit().putLong(KEY_BUILT_AT, System.currentTimeMillis()).putInt(KEY_LISTS, LISTS_VERSION).apply()
+        if (due) prefs.edit().putLong(KEY_BUILT_AT, System.currentTimeMillis()).putInt(KEY_LISTS, LISTS_VERSION).apply()
     }
 
     private suspend fun resync(source: SourceEntity) {

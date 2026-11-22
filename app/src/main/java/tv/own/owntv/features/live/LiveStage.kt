@@ -104,9 +104,10 @@ private val Tabular = "tnum"
 
 /** "Live TV" 46/800, then the crumb: "‹ **Sky Cinema** · 9 channels" (no ‹ when the column is on screen). */
 @Composable
-internal fun LiveHeader(category: String, count: Int?, showChevron: Boolean, modifier: Modifier = Modifier) {
+internal fun LiveHeader(category: String, count: Int?, showChevron: Boolean, modifier: Modifier = Modifier, title: String? = null) {
     Row(modifier, horizontalArrangement = Arrangement.spacedBy(22.mpx), verticalAlignment = Alignment.Bottom) {
-        Text(stringResource(R.string.common_nav_live_tv), style = stageText(46, 800, (-1).mpxSp), color = StageColors.Text, maxLines = 1, overflow = TextOverflow.Ellipsis)
+        // SushiTV: the playlist's name when Live TV shows a single one ([title]), else "Live TV".
+        Text(title ?: stringResource(R.string.common_nav_live_tv), style = stageText(46, 800, (-1).mpxSp), color = StageColors.Text, maxLines = 1, overflow = TextOverflow.Ellipsis)
         Row(
             Modifier.padding(bottom = 3.mpx),
             horizontalArrangement = Arrangement.spacedBy(12.mpx),

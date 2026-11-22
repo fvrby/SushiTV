@@ -12,14 +12,14 @@ import tv.own.owntv.ui.components.OwnTVIcon
  * with its own playlist chosen in OwnTV's playlist switcher, so every list keeps its own section column.
  */
 object SushiRail {
-    private class Spec(val nameRes: Int, val icon: OwnTVIcon, val matches: (String) -> Boolean)
+    private class Spec(val nameRes: Int, val icon: OwnTVIcon, val image: Int, val matches: (String) -> Boolean)
 
     private val SPECS = listOf(
-        Spec(R.string.sushitv_rail_tv_chilena, OwnTVIcon.LIVE_TV) { it.endsWith(SushiChileSource.CHILE) },
-        Spec(R.string.sushitv_rail_pluto, OwnTVIcon.PLAY_CIRCLE) { SushiPluto.isPluto(it) },
-        Spec(R.string.sushitv_rail_music, OwnTVIcon.HEADPHONES) { it.endsWith(SushiPluto.MUSIC_FILE) },
-        Spec(R.string.sushitv_rail_movies, OwnTVIcon.MOVIES) { it.endsWith(SushiPluto.MOVIES_FILE) },
-        Spec(R.string.sushitv_rail_series, OwnTVIcon.SERIES) { it.endsWith(SushiPluto.SERIES_FILE) },
+        Spec(R.string.sushitv_rail_tv_chilena, OwnTVIcon.LIVE_TV, R.drawable.sushitv_rail_chile) { it.endsWith(SushiChileSource.CHILE) },
+        Spec(R.string.sushitv_rail_pluto, OwnTVIcon.PLAY_CIRCLE, R.drawable.sushitv_rail_pluto) { SushiPluto.isPluto(it) },
+        Spec(R.string.sushitv_rail_music, OwnTVIcon.HEADPHONES, R.drawable.sushitv_rail_music) { it.endsWith(SushiPluto.MUSIC_FILE) },
+        Spec(R.string.sushitv_rail_movies, OwnTVIcon.MOVIES, R.drawable.sushitv_rail_movies) { it.endsWith(SushiPluto.MOVIES_FILE) },
+        Spec(R.string.sushitv_rail_series, OwnTVIcon.SERIES, R.drawable.sushitv_rail_series) { it.endsWith(SushiPluto.SERIES_FILE) },
     )
 
     @Composable
@@ -30,6 +30,6 @@ object SushiRail {
         open: (Long) -> Unit,
     ): List<RailShortcut> = SPECS.mapNotNull { spec ->
         val source = playlists.firstOrNull { spec.matches(it.url) } ?: return@mapNotNull null
-        RailShortcut(stringResource(spec.nameRes), spec.icon, liveSelected && activePlaylistId == source.id) { open(source.id) }
+        RailShortcut(stringResource(spec.nameRes), spec.icon, liveSelected && activePlaylistId == source.id, spec.image) { open(source.id) }
     }
 }

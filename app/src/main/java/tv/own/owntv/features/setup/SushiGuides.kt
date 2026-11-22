@@ -19,7 +19,7 @@ import tv.own.owntv.core.sync.work.EpgSyncScheduler
  * [GUIDES] changes so existing installs pick the new list up.
  */
 object SushiGuides {
-    private const val VERSION = 1
+    private const val VERSION = 2 // 2: refresh daily instead of on every start
     private const val PREFS = "sushitv"
     private const val KEY_VERSION = "guides_version"
 
@@ -53,9 +53,12 @@ object SushiGuides {
         for ((nameRes, url) in GUIDES) {
             if (url in present) continue
             val source = store.add(context.getString(nameRes), url, null)
-            settings.setEpgAutoRefresh(source.id, EpgRefresh(EpgAutoRefresh.STARTUP))
             scheduler.enqueueSync(source.id, "sushitv_guides")
         }
+        // Once a day is plenty (the guides hold ~1.5 days) and spares the TV a 7 MB parse at every start.
+        val urls = GUIDES.map { it.second }.toSet()
+        store.getAll().filter { it.url.trim() in urls }
+            .forEach { settings.setEpgAutoRefresh(it.id, EpgRefresh(EpgAutoRefresh.HOURS_24)) }
         prefs.edit().putInt(KEY_VERSION, VERSION).apply()
     }
 }

@@ -16,24 +16,28 @@ import tv.own.owntv.core.settings.SettingsRepository
  * playlist named "TV chilena" like its rail entry.
  */
 object SushiDefaults {
-    private const val VERSION = 1
+    private const val VERSION = 2 // 2: TV chilena re-synced every 12 h, not on every start
     private const val PREFS = "sushitv"
     private const val KEY_VERSION = "defaults_version"
 
     suspend fun apply(context: Context) {
         val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
-        if (prefs.getInt(KEY_VERSION, 0) >= VERSION) return
+        val done = prefs.getInt(KEY_VERSION, 0)
+        if (done >= VERSION) return
         val koin = GlobalContext.get()
         val settings = koin.get<SettingsRepository>()
-        settings.setLiveLayout(SettingsRepository.LiveLayout.SEPARATE)
+        if (done < 1) settings.setLiveLayout(SettingsRepository.LiveLayout.SEPARATE)
 
         val profileId = koin.get<ProfileDao>().resolveExistingProfileId(settings.activeProfileId.first())
         if (profileId != null) {
             val name = context.getString(R.string.sushitv_chile_title)
             val dao = koin.get<SourceDao>()
             koin.get<SourceRepository>().observeSources(profileId).first()
-                .filter { it.url.endsWith(SushiChileSource.CHILE) && it.name != name }
-                .forEach { s -> dao.getById(s.id)?.let { dao.update(it.copy(name = name)) } }
+                .filter { it.url.endsWith(SushiChileSource.CHILE) }
+                .forEach { s ->
+                    if (done < 1 && s.name != name) dao.getById(s.id)?.let { dao.update(it.copy(name = name)) }
+                    if (done < 2) settings.setPlaylistAutoRefresh(s.id, SushiChileSource.refresh)
+                }
         }
         prefs.edit().putInt(KEY_VERSION, VERSION).apply()
     }

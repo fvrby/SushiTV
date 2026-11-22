@@ -661,6 +661,7 @@ fun LiveScreen(
                 .then(if (categoriesOpen) Modifier.graphicsLayer { alpha = 0.4f } else Modifier),
         ) {
             LiveHeader(
+                title = vm.singlePlaylistName.collectAsStateWithLifecycle().value,
                 category = headerLabel,
                 count = count.takeUnless { selectedItem?.sealed == true },
                 showChevron = !separate && lockedKey == null,

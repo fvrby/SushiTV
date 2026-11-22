@@ -846,6 +846,14 @@ class LiveViewModel(
     /** The playlist's name, for the channel menu's "category · playlist" line. */
     fun sourceNameOf(sourceId: Long): String? = sourceById[sourceId]?.name
 
+    /**
+     * SushiTV: the one playlist Live TV is showing ("TV chilena", "Pluto TV", "Música"…), which titles
+     * the screen like the rail entry that opened it; null with several playlists ("Live TV" then).
+     */
+    val singlePlaylistName: StateFlow<String?> = ctx
+        .map { c -> c.sourceNames.values.singleOrNull() }
+        .stateIn(viewModelScope, kotlinx.coroutines.flow.SharingStarted.WhileSubscribed(5_000), null)
+
     /** Distinct EPG channels for the "Match EPG" picker (across the profile's playlists + EPG feeds),
      *  ranked so guide channels resembling [channelName] come first instead of a plain A-Z list. */
     suspend fun availableEpgChannels(channelName: String, query: String): List<tv.own.owntv.core.epg.GuideCandidate> {

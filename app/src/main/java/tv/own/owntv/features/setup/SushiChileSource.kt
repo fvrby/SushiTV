@@ -19,7 +19,7 @@ object SushiChileSource {
     const val FREE_TV = "peliculas-series-gratis.m3u"
 
     val refresh: PlaylistRefresh
-        get() = if (remote) PlaylistRefresh(PlaylistAutoRefresh.STARTUP) else PlaylistRefresh.OFF
+        get() = if (remote) PlaylistRefresh(PlaylistAutoRefresh.HOURS_12) else PlaylistRefresh.OFF
 
     private val remote: Boolean get() = BuildConfig.SUSHITV_REPO.isNotBlank()
 

@@ -159,9 +159,10 @@ class OwnTVApp : Application(), SingletonImageLoader.Factory, androidx.work.Conf
             kotlinx.coroutines.delay(SPORTS_START_DELAY_MS)
             runCatching { GlobalContext.get().get<tv.own.owntv.core.sports.SportsRepository>().appStarted() }
         }
-        // SushiTV: the Chilean program guides set themselves up (no address to type), after launch.
+        // SushiTV: the Chilean program guides set themselves up (no address to type), a minute after
+        // launch so the first minute of browsing stays smooth.
         appScope.launch {
-            kotlinx.coroutines.delay(SPORTS_START_DELAY_MS)
+            kotlinx.coroutines.delay(60_000L)
             runCatching { tv.own.owntv.features.setup.SushiGuides.ensure(this@OwnTVApp) }
                 .onFailure { android.util.Log.w("SushiGuides", "guide setup failed", it) }
             // Live TV with its section column on screen; the Chilean playlist named "TV chilena".
