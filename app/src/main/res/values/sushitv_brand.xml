@@ -7,11 +7,12 @@
     <string name="sushitv_word_tv" translatable="false">TV</string>
     <!-- Line under the logo in the pixel-art welcome (SushiWelcome). -->
     <string name="sushitv_welcome" translatable="false">¡Te damos la bienvenida!</string>
-    <!-- Second playlist (Pluto TV, free and legal), built on the TV by SushiPluto. -->
-    <string name="sushitv_free_tv_title" translatable="false">Películas y series</string>
-    <!-- Rail entries that replace Live TV (SushiRail): each opens Live TV on one playlist. -->
+    <!-- Rail entries (SushiRail) = the playlists of the same name (SushiPluto builds all but TV chilena). -->
     <string name="sushitv_rail_tv_chilena" translatable="false">TV chilena</string>
-    <string name="sushitv_rail_movies" translatable="false">Películas y series</string>
+    <string name="sushitv_rail_pluto" translatable="false">Pluto TV</string>
+    <string name="sushitv_rail_music" translatable="false">Música</string>
+    <string name="sushitv_rail_movies" translatable="false">Películas</string>
+    <string name="sushitv_rail_series" translatable="false">Series</string>
     <!-- Program guide sources SushiGuides adds on its own (Settings › EPG sources). -->
     <string name="sushitv_guide_chile_2" translatable="false">Guía Chile (nacionales)</string>
     <string name="sushitv_guide_chile_1" translatable="false">Guía Chile (La Red, UCV, TVU)</string>

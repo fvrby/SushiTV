@@ -174,7 +174,10 @@ fun StageRail(
         selected == MainSection.SEARCH || selected in visibleSections -> selected
         else -> StageRailOrder.firstOrNull { it in visibleSections } ?: MainSection.MORE
     }
-    val items = StageRailOrder.filter { it == MainSection.SEARCH || it in visibleSections } + MainSection.MORE
+    // SushiTV: with the playlist shortcuts, Sports, the Guide and the on-demand Movies/Series sections
+    // give way to them (the guide stays reachable from Live TV's guide view).
+    val replaced = if (liveShortcuts.isNotEmpty()) setOf(MainSection.SPORTS, MainSection.EPG, MainSection.MOVIES, MainSection.SERIES) else emptySet()
+    val items = StageRailOrder.filter { (it == MainSection.SEARCH || it in visibleSections) && it !in replaced } + MainSection.MORE
 
     // Slide in from the edge (320 ms, or a snap with animations off) when the rail leaves HIDDEN. A rail
     // that opens from the capsule already on screen widens in place instead: sliding it in from off-screen

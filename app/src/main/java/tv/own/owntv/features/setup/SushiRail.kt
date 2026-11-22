@@ -8,26 +8,28 @@ import tv.own.owntv.features.shell.components.RailShortcut
 import tv.own.owntv.ui.components.OwnTVIcon
 
 /**
- * SushiTV: the rail's "TV chilena" and "Películas y series" entries. Each one opens Live TV with its
- * playlist chosen in OwnTV's own playlist switcher, so every list keeps its own section column.
+ * SushiTV: the rail's entries — TV chilena, Pluto TV, Música, Películas, Series. Each opens Live TV
+ * with its own playlist chosen in OwnTV's playlist switcher, so every list keeps its own section column.
  */
 object SushiRail {
+    private class Spec(val nameRes: Int, val icon: OwnTVIcon, val matches: (String) -> Boolean)
+
+    private val SPECS = listOf(
+        Spec(R.string.sushitv_rail_tv_chilena, OwnTVIcon.LIVE_TV) { it.endsWith(SushiChileSource.CHILE) },
+        Spec(R.string.sushitv_rail_pluto, OwnTVIcon.PLAY_CIRCLE) { SushiPluto.isPluto(it) },
+        Spec(R.string.sushitv_rail_music, OwnTVIcon.HEADPHONES) { it.endsWith(SushiPluto.MUSIC_FILE) },
+        Spec(R.string.sushitv_rail_movies, OwnTVIcon.MOVIES) { it.endsWith(SushiPluto.MOVIES_FILE) },
+        Spec(R.string.sushitv_rail_series, OwnTVIcon.SERIES) { it.endsWith(SushiPluto.SERIES_FILE) },
+    )
+
     @Composable
     fun shortcuts(
         playlists: List<SourceEntity>,
         activePlaylistId: Long,
         liveSelected: Boolean,
         open: (Long) -> Unit,
-    ): List<RailShortcut> {
-        val chile = playlists.firstOrNull { it.url.endsWith(SushiChileSource.CHILE) }
-        val pluto = playlists.firstOrNull { SushiPluto.isPluto(it.url) }
-        return listOfNotNull(
-            chile?.let {
-                RailShortcut(stringResource(R.string.sushitv_rail_tv_chilena), OwnTVIcon.LIVE_TV, liveSelected && activePlaylistId == it.id) { open(it.id) }
-            },
-            pluto?.let {
-                RailShortcut(stringResource(R.string.sushitv_rail_movies), OwnTVIcon.MOVIES, liveSelected && activePlaylistId == it.id) { open(it.id) }
-            },
-        )
+    ): List<RailShortcut> = SPECS.mapNotNull { spec ->
+        val source = playlists.firstOrNull { spec.matches(it.url) } ?: return@mapNotNull null
+        RailShortcut(stringResource(spec.nameRes), spec.icon, liveSelected && activePlaylistId == source.id) { open(source.id) }
     }
 }

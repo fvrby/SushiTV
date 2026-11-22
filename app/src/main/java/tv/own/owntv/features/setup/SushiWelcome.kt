@@ -40,7 +40,7 @@ import tv.own.owntv.R
  * (res/drawable-nodpi/sushitv_pixel.png, 48×48, from sushitv/tools/make-brand.ps1) assembles pixel by
  * pixel in a diagonal wave, then "SushiTV" and the greeting appear, and it fades into the app.
  *
- * Under two seconds, drawn on one Canvas (no assets beyond a 48 px PNG, no WebView). It never takes
+ * About four seconds, drawn on one Canvas (no assets beyond a 48 px PNG, no WebView). It never takes
  * focus, so the screen underneath keeps the remote exactly as if the welcome were not there.
  */
 @Composable
@@ -53,9 +53,9 @@ fun SushiWelcome() {
     val fade = remember { Animatable(1f) }
     LaunchedEffect(Unit) {
         WelcomeOnce.shown = true
-        progress.animateTo(1f, tween(durationMillis = 1300, easing = LinearEasing))
-        delay(350)
-        fade.animateTo(0f, tween(durationMillis = 300))
+        progress.animateTo(1f, tween(durationMillis = 2600, easing = LinearEasing))
+        delay(1000)
+        fade.animateTo(0f, tween(durationMillis = 500))
         visible = false
     }
     val p = progress.value
