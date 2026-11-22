@@ -86,4 +86,10 @@ $g.DrawString("Sushi", $font, (New-Object System.Drawing.SolidBrush $Rice), $x0,
 $g.DrawString("TV", $font, (New-Object System.Drawing.SolidBrush $Salmon), ($x0 + $wSushi + 4), 38, $fmt)
 $g.Dispose(); Save $bmp (Join-Path $Res "drawable-xhdpi\sushitv_splash_name.png"); $bmp.Dispose()
 
+# 5) In-app mark (replaces OwnTV's logo in the rail, home, About...): Sushi in a circle with a
+#    salmon ring, transparent outside. 512 px nodpi, drawn scaled to whatever size the UI asks.
+$bmp, $g = New-Canvas 512 512
+Draw-Cat $g 20 20 472 18
+$g.Dispose(); Save $bmp (Join-Path $Res "drawable-nodpi\sushitv_mark.png"); $bmp.Dispose()
+
 $src.Dispose()

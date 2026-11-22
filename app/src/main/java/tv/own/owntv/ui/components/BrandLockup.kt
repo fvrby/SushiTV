@@ -57,6 +57,14 @@ private fun accentTriangle(): Color? {
  */
 @Composable
 fun BrandMark(icon: AppIcon, size: Dp, modifier: Modifier = Modifier, followAccent: Boolean = true) {
+    // SushiTV: every in-app logo is Sushi (res/drawable-nodpi/sushitv_mark.png), whatever icon
+    // colour core reports. OwnTV's own drawing is kept below for reference only.
+    Image(painterResource(R.drawable.sushitv_mark), contentDescription = null, modifier = modifier.size(size))
+}
+
+@Suppress("unused")
+@Composable
+private fun OwnTvBrandMark(icon: AppIcon, size: Dp, modifier: Modifier = Modifier, followAccent: Boolean = true) {
     val small = size <= 32.dp
     val accent = accentTriangle().takeIf { followAccent }
     if (icon == AppIcon.PIXEL && !small) {
@@ -106,6 +114,26 @@ private val PixelPower = Color(CorePixelMark.POWER)
  */
 @Composable
 fun Wordmark(width: Dp, modifier: Modifier = Modifier, tv: Color = stageAccent.accent, own: Color = WordmarkCream) {
+    // SushiTV: "Sushi" in [own] + "TV" in [tv], as text, at the size OwnTV's wordmark had.
+    val style = androidx.compose.ui.text.TextStyle(
+        fontSize = with(androidx.compose.ui.platform.LocalDensity.current) { (width * 182f / 988f).toSp() },
+        fontWeight = androidx.compose.ui.text.font.FontWeight.ExtraBold,
+    )
+    Row(modifier.width(width), verticalAlignment = Alignment.CenterVertically) {
+        androidx.compose.foundation.text.BasicText(
+            androidx.compose.ui.res.stringResource(R.string.sushitv_word_sushi),
+            style = style.copy(color = own), maxLines = 1, softWrap = false,
+        )
+        androidx.compose.foundation.text.BasicText(
+            androidx.compose.ui.res.stringResource(R.string.sushitv_word_tv),
+            style = style.copy(color = tv), maxLines = 1, softWrap = false,
+        )
+    }
+}
+
+@Suppress("unused")
+@Composable
+private fun OwnTvWordmark(width: Dp, modifier: Modifier = Modifier, tv: Color = stageAccent.accent, own: Color = WordmarkCream) {
     Box(modifier.width(width).height(width * 182f / 988f)) {
         Image(painterResource(R.drawable.owntv_wordmark_own), null, Modifier.fillMaxSize(), colorFilter = ColorFilter.tint(own))
         Image(painterResource(R.drawable.owntv_wordmark_tv), null, Modifier.fillMaxSize(), colorFilter = ColorFilter.tint(tv))
