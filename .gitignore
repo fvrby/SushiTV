@@ -60,3 +60,4 @@ replay_pid*.log
 
 # SushiTV: original photo stays local (only the cropped app images are committed)
 /sushi-icon.png
+/avatares/

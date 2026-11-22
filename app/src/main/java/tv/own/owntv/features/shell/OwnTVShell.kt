@@ -1505,6 +1505,13 @@ fun OwnTVShell(
                 onFocused = { focusedLayer = ShellLayer.SIDEBAR },
                 nowPlaying = nowPlayingRail,
                 onNowPlaying = enterNowPlaying,
+                // SushiTV: "TV chilena" and "Películas y series" instead of a single Live TV entry.
+                liveShortcuts = tv.own.owntv.features.setup.SushiRail.shortcuts(
+                    playlists = playlists,
+                    activePlaylistId = activePlaylistId,
+                    liveSelected = selectedSection == MainSection.LIVE_TV,
+                    open = { id -> onSelectPlaylist(id); selectFromNav(MainSection.LIVE_TV) },
+                ),
             )
           }
         }

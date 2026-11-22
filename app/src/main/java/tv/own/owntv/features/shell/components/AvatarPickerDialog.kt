@@ -49,10 +49,7 @@ fun AvatarPickerDialog(
         modifier = Modifier.longPressMenuGuard(),
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(16.mpx)) {
-            // The "no avatar" option showing the Rank 1 ProfileIcon (ID -1)
-            AvatarTile(selected = selectedId == -1, onClick = { onSelect(-1); onDismiss() }, focus = selectedFocus.takeIf { selectedId == -1 }) {
-                ProfileIcon(color = stageAccent.accent, modifier = Modifier.size(56.mpx))
-            }
+            // SushiTV: no "no avatar" silhouette — every profile is one of the cats or its own picture.
 
             // A picture of your own, alongside the drawn set. Same two ways in as the background
             // image — a file on this device, or a photo sent from a phone — so there is one idea to
@@ -63,7 +60,7 @@ fun AvatarPickerDialog(
                         if (customPath.isNotBlank()) {
                             OwnTVAvatar(avatarId = selectedId, imagePath = customPath, modifier = Modifier.size(90.mpx))
                         } else {
-                            ProfileIcon(color = StageColors.Muted, modifier = Modifier.size(56.mpx))
+                            tv.own.owntv.ui.components.OwnTVIcon(tv.own.owntv.ui.components.OwnTVIcon.IMAGE, StageColors.Muted, Modifier.size(48.mpx))
                         }
                     }
                     Text(
@@ -82,7 +79,7 @@ fun AvatarPickerDialog(
                 }
             }
 
-            (0 until OwnTVAvatars.COUNT).toList().chunked(5).forEach { rowIds ->
+            (0 until OwnTVAvatars.COUNT).toList().chunked(5).forEach { rowIds -> // the cats
                 Row(horizontalArrangement = Arrangement.spacedBy(16.mpx)) {
                     rowIds.forEach { id ->
                         val isSelected = id == selectedId

@@ -24,7 +24,9 @@ Exigido por la GPL-3.0 (sección 5a): estos son los archivos que SushiTV modific
 | 2026-11-21 | La foto original (`sushi-icon.png`) queda fuera del repo; solo se suben los recortes | `.gitignore` |
 | 2026-11-21 | Logo dentro de la app = Sushi (barra lateral, inicio, Acerca de) y texto "SushiTV" en vez de "owntv" | `ui/components/BrandLockup.kt`, `res/drawable-nodpi/sushitv_mark.png`, `res/values/sushitv_brand.xml` |
 | 2026-11-21 | Sin selector "Ícono de la app" ni "Logo en color de acento" (el ícono siempre es Sushi) | `SetupWizard.kt`, `SettingsScreen.kt` |
-| 2026-11-22 | Lista "Películas y series gratis" (Pluto TV) agregada sola como segunda lista | `features/setup/SushiFreeTv.kt`, `SushiChileSource.kt`, `OwnTVApp.kt`, `assets/peliculas-series-gratis.m3u`, `sushitv/tools/gratis/pluto.py` |
+| 2026-11-22 | Avatares = fotos de los gatos (sin dibujos predefinidos ni silueta "sin avatar"); se mantiene "Tu propia foto" | `ui/components/OwnTVAvatar.kt`, `AvatarPickerDialog.kt`, `ProfileComponents.kt`, `SetupWizard.kt`, `StageRail.kt`, `res/drawable-nodpi/sushitv_avatar_*.png` (de `sushitv/tools/make-avatars.ps1`; fotos originales en `avatares/`, fuera de git) |
+| 2026-11-22 | Íconos "TV chilena" y "Películas y series" en el menú lateral en lugar de "TV en vivo"; TV en vivo en diseño Separado | `components/StageRail.kt`, `shell/OwnTVShell.kt`, `features/setup/SushiRail.kt`, `features/setup/SushiDefaults.kt` |
+| 2026-11-22 | Lista "Películas y series" (Pluto TV) armada en la tele con sesión propia y renovada cada 12 h | `features/setup/SushiPluto.kt`, `SushiChileSource.kt`, `OwnTVApp.kt`, `assets/peliculas-series-gratis.m3u`, `sushitv/tools/gratis/pluto.py` |
 | 2026-11-22 | Guías de programación de Chile (open-epg) configuradas solas al abrir la app | `features/setup/SushiGuides.kt`, `OwnTVApp.kt`, `res/values/sushitv_brand.xml` |
 | 2026-11-21 | Textos visibles "OwnTV" → "SushiTV" (salvo los que nombran servicios de OwnTV: metadatos compartidos y traducción) | `res/values*/sushitv_rename.xml`, generados con `sushitv/tools/rename-strings.py` |
 
@@ -132,23 +134,39 @@ Pendientes:
   incluyen): Mega 2, Mega Ficción, Meganoticias Ahora.
 - **Exclusivos de Zapping** (servicio de pago): los canales "Zapping" y "music" de Zapping.
 
-## Películas y series gratis
+## Menú lateral: "TV chilena" y "Películas y series"
 
-Segunda lista, `app/src/main/assets/peliculas-series-gratis.m3u`: **197 canales de Pluto TV** (servicio
-gratuito y legal, con publicidad) disponibles en Chile, en 17 grupos (Películas, Series, Novelas,
-Comedia, Infantil, Anime, Documentales, Crimen, Reality, Deportes, etc.). La app la agrega sola al
-perfil (`features/setup/SushiFreeTv.kt`) cuando la configuración inicial ya terminó, y aparece como su
-propio espacio en el selector de listas del menú lateral.
+En vez de un solo "TV en vivo", el menú tiene dos íconos (`features/setup/SushiRail.kt`,
+`StageRail.kt`, `OwnTVShell.kt`). Cada uno abre TV en vivo con su lista elegida en el selector de
+listas de OwnTV, así cada lista muestra solo sus propias secciones. `SushiDefaults.kt` deja TV en vivo
+en el diseño **Separado** (columna de secciones siempre visible) y llama "TV chilena" a la lista chilena.
 
-Para regenerarla (desde Chile: la API de Pluto responde según el país de la conexión):
+## Películas y series (Pluto TV)
+
+**196 canales de Pluto TV** (gratis y legal, con publicidad) disponibles en Chile, en 17 secciones
+(Películas, Series, Novelas, Comedia, Infantil, Anime, Documentales, Crimen, Reality, Deportes, etc.).
+
+Desde noviembre de 2026 Pluto solo entrega programación con una **sesión que vence a las 24 h**
+(`boot.pluto.tv/v4/start`); las URLs fijas antiguas reciben un video de *"Pluto TV is no longer available
+on this device"*. Por eso:
+
+- `app/src/main/assets/peliculas-series-gratis.m3u` es solo una **plantilla** (nombre, sección, logo e
+  id `pluto-<id>` de cada canal, sin URLs de sesión).
+- La app (`features/setup/SushiPluto.kt`) pide una sesión anónima en la tele, escribe la lista con URLs
+  válidas en el almacenamiento de la app, la importa como "Películas y series" y la rehace cada 12 h. La
+  sesión incluye la ubicación aproximada de la tele: queda en la tele y solo viaja a Pluto.
+- Una sesión no acepta muchos canales abiertos a la vez: se ve un canal por vez (Multivista con canales
+  de Pluto puede fallar).
+
+Para regenerar la plantilla (desde Chile: la API de Pluto responde según el país de la conexión). Prueba
+los canales de a uno con una sesión real y descarta los que entregan el aviso; tarda unos 3 minutos:
 
 ```powershell
 python -I sushitv\tools\gratis\pluto.py app\src\main\assets\peliculas-series-gratis.m3u
 ```
 
-El script arma cada URL con un identificador genérico fijo y **descarta la ubicación** que trae la API
-(`deviceLat`/`deviceLon`), prueba cada canal y quita los duplicados. Sin guía de programación por ahora:
-la guía pública de Pluto para Chile (i.mjh.nz) no corresponde a esta programación.
+Sin guía de programación por ahora: la guía pública de Pluto para Chile (i.mjh.nz) no corresponde a esta
+programación.
 
 No se incluyen canales de cable de pago (History, Cartoon Network, Discovery…): no tienen señal
 gratuita oficial, y las que circulan son retransmisiones piratas.

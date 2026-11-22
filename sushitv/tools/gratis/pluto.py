@@ -1,26 +1,22 @@
-"""Genera la lista "Películas y series gratis" con los canales de Pluto TV (servicio gratuito y legal,
-con publicidad) disponibles en Chile, y deja solo los que entregan video.
+"""Genera la PLANTILLA de "Películas y series" con los canales de Pluto TV (servicio gratuito y legal,
+con publicidad) disponibles en Chile: nombre, sección, logo e id de cada canal que hoy entrega programación.
 
 Uso (desde la raíz del repo, conectado desde Chile: la API de Pluto responde según el país de la IP):
     python -I sushitv/tools/gratis/pluto.py app/src/main/assets/peliculas-series-gratis.m3u
 
-Privacidad: la API trae la ubicación aproximada de quien consulta (deviceLat/deviceLon) en sus URLs.
-Esas URLs NO se usan: cada señal se arma desde cero con un identificador genérico y fijo, sin datos de
-nadie, igual que el reproductor web de Pluto.
+Desde nov. 2026 Pluto solo sirve programación con una sesión que vence a las 24 h (boot.pluto.tv); las URLs
+fijas antiguas reciben un video de "Pluto TV is no longer available on this device". Por eso la plantilla NO
+trae URLs reproducibles: la app (features/setup/SushiPluto.kt) pide la sesión en la tele, arma la lista ahí y
+la renueva sola. Así la sesión, que incluye la ubicación aproximada de quien la pide, nunca llega a GitHub.
 """
-import json, re, sys, urllib.parse, urllib.request
-from concurrent.futures import ThreadPoolExecutor
+import json, re, sys, uuid, urllib.parse, urllib.request
 
 OUT = sys.argv[1]
 API = 'https://api.pluto.tv/v2/channels'
+BOOT = 'https://boot.pluto.tv/v4/start'
 UA = 'Mozilla/5.0 (Linux; Android 12; TV) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36'
-# Generic identifiers shared by every SushiTV install (random, not tied to any person or device).
-DEVICE_ID = '7d4e2a51-3c9b-4f0e-9a61-5b2f8c3d1e07'
-SESSION_ID = 'c1f0b6e4-8a2d-4b7c-93e5-0d6a4f2b9c18'
-STREAM = ('https://service-stitcher.clusters.pluto.tv/stitch/hls/channel/{id}/master.m3u8?advertisingId=&appName=web'
-          '&appVersion=unknown&appStoreUrl=&architecture=&buildVersion=&clientTime=0&deviceDNT=0'
-          f'&deviceId={DEVICE_ID}&deviceMake=Chrome&deviceModel=web&deviceType=web&deviceVersion=unknown'
-          f'&includeExtendedEvents=false&sid={SESSION_ID}&userId=&serverSideAds=true')
+# Placeholder written to the template: the app replaces it with a session URL built from the channel id.
+STREAM = 'https://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/v2/stitch/hls/channel/{id}/master.m3u8'
 
 # Pluto's category -> our group, in display order.
 GROUPS = [
@@ -54,8 +50,19 @@ def get(url, limit=None):
     with urllib.request.urlopen(urllib.request.Request(url, headers={'User-Agent': UA}), timeout=15) as r:
         return r.geturl(), (r.read(limit) if limit else r.read())
 
-def plays(url):
-    """Follow master -> variant -> first segment; True when a real media segment comes back."""
+def boot_session():
+    """A fresh anonymous Pluto session (like the web player): stitcher base, params and JWT."""
+    q = dict(appName='web', appVersion='9.10.0', deviceVersion='12', deviceModel='web', deviceMake='chrome',
+             deviceType='web', clientID=str(uuid.uuid4()), clientModelNumber='1.0.0', serverSideAds='false',
+             drmCapabilities='', blockingMode='')
+    b = json.loads(get(BOOT + '?' + urllib.parse.urlencode(q))[1])
+    return b['servers']['stitcher'], b['stitcherParams'], b['sessionToken']
+
+def plays(channel_id, session):
+    """Master -> variant -> first segment with a real session: True for real programming, False for the
+    takedown slate ("no longer available"), errors or empty segments."""
+    base, params, jwt = session
+    url = f'{base}/v2/stitch/hls/channel/{channel_id}/master.m3u8?{params}&jwt={jwt}&masterJWTPassthrough=true'
     try:
         for _ in range(4):
             final, body = get(url, 300_000)
@@ -67,6 +74,8 @@ def plays(url):
             if '.m3u8' in lines[0].split('?')[0]:
                 url = nxt
                 continue
+            if 'takedown' in nxt:
+                return False
             return len(get(nxt, 200_000)[1]) > 4096
     except Exception:
         return False
@@ -86,8 +95,9 @@ for c in channels:
         'url': STREAM.format(id=c['_id']),
     })
 
-with ThreadPoolExecutor(16) as ex:
-    ok = list(ex.map(lambda r: plays(r['url']), rows))
+# One channel at a time: a Pluto session hands out empty playlists to parallel requests.
+session = boot_session()
+ok = [plays(r['id'], session) for r in rows]
 working = [r for r, good in zip(rows, ok) if good]
 # Pluto lists a few channels twice ("Pluto Tv Cine Acción" / "Pluto TV Cine Acción"): keep one per
 # name, preferring the one with a real channel number.

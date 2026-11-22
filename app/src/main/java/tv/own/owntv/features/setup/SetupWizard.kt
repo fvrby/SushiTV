@@ -454,7 +454,7 @@ private fun AppIconSwatches(icons: List<AppIcon>, chosen: AppIcon) {
 @Composable
 private fun ProfileStep(onCreate: (name: String, avatarId: Int, isKids: Boolean, pin: String?, picture: java.io.File?) -> Unit, onBack: () -> Unit) {
     var name by remember { mutableStateOf("") }
-    var avatarId by remember { mutableIntStateOf(-1) } // new profiles start on the letter
+    var avatarId by remember { mutableIntStateOf(0) } // SushiTV: new profiles start on the first cat
     var isKids by remember { mutableStateOf(false) }
     var pin by remember { mutableStateOf("") }
     var picture by remember { mutableStateOf<java.io.File?>(null) }
@@ -475,7 +475,7 @@ private fun ProfileStep(onCreate: (name: String, avatarId: Int, isKids: Boolean,
             OwnTVIcon.PENCIL, nameLabel, name, { name = it }, SettingHelp(nameLabel, fieldHelp),
             placeholder = stringResource(R.string.profiles_name_hint), modifier = Modifier.focusRequester(nameFocus),
         )
-        val ids = (-1 until OwnTVAvatars.COUNT).toList()
+        val ids = (0 until OwnTVAvatars.COUNT).toList() // SushiTV: the cats only
         val at = ids.indexOf(avatarId).coerceAtLeast(0)
         StageSettingRow(
             icon = OwnTVIcon.PERSON,

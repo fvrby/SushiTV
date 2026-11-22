@@ -96,6 +96,12 @@ enum class RailState {
  */
 data class NowPlayingRail(val logoUrl: String?, val audioMode: Boolean, val playing: Boolean)
 
+/**
+ * SushiTV: a rail entry that opens Live TV on one playlist ("TV chilena", "Películas y series").
+ * When the rail is given any, they take Live TV's place in the rail.
+ */
+data class RailShortcut(val label: String, val icon: OwnTVIcon, val active: Boolean, val onClick: () -> Unit)
+
 /** The rail order: Search first, Sports then the Guide right after Live TV, More last. */
 private val StageRailOrder = listOf(
     MainSection.SEARCH, MainSection.HOME, MainSection.LIVE_TV, MainSection.SPORTS, MainSection.EPG,
@@ -152,6 +158,8 @@ fun StageRail(
     nowPlaying: NowPlayingRail?,
     onNowPlaying: () -> Unit,
     modifier: Modifier = Modifier,
+    /** SushiTV: playlist shortcuts shown instead of the Live TV item (empty = the plain Live TV item). */
+    liveShortcuts: List<RailShortcut> = emptyList(),
 ) {
     val open = (state == RailState.OPEN || state == RailState.PINNED) && size != NavSize.COMPACT
     val counts = size >= NavSize.WIDE
@@ -297,6 +305,24 @@ fun StageRail(
                 RailSeparator(shown)
             }
             items.forEach { section ->
+                if (section == MainSection.LIVE_TV && liveShortcuts.isNotEmpty()) {
+                    // Entering the rail lands on the shortcut in use (or the first one).
+                    val focusIndex = liveShortcuts.indexOfFirst { it.active }.coerceAtLeast(0)
+                    liveShortcuts.forEachIndexed { i, shortcut ->
+                        RailItem(
+                            icon = shortcut.icon,
+                            label = shortcut.label,
+                            trailing = null,
+                            detail = null,
+                            open = shown,
+                            namesAlpha = namesAlpha,
+                            active = shortcut.active,
+                            onClick = shortcut.onClick,
+                            modifier = if (section == focusSection && i == focusIndex) Modifier.focusRequester(selectedItemFocusRequester) else Modifier,
+                        )
+                    }
+                    return@forEach
+                }
                 RailItem(
                     icon = section.stageIcon,
                     label = stringResource(section.labelRes),
@@ -506,7 +532,8 @@ private fun RailProfile(open: Boolean, namesAlpha: () -> Float, name: String, li
  */
 @Composable
 internal fun RailAvatar(initial: String, size: Int = 46, textSize: Int = 20, avatarId: Int = -1, imagePath: String = "") {
-    if (avatarId != -1 || imagePath.isNotBlank()) {
+    // SushiTV: always a cat (a "no avatar" profile shows the first one), never the bare initial.
+    if (true) {
         tv.own.owntv.ui.components.OwnTVAvatar(avatarId = avatarId, imagePath = imagePath, modifier = Modifier.size(size.mpx).clip(CircleShape))
         return
     }

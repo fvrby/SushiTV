@@ -164,9 +164,16 @@ class OwnTVApp : Application(), SingletonImageLoader.Factory, androidx.work.Conf
             kotlinx.coroutines.delay(SPORTS_START_DELAY_MS)
             runCatching { tv.own.owntv.features.setup.SushiGuides.ensure(this@OwnTVApp) }
                 .onFailure { android.util.Log.w("SushiGuides", "guide setup failed", it) }
-            // Then the free movies & series playlist (its own space in the playlist switcher).
-            runCatching { tv.own.owntv.features.setup.SushiFreeTv.ensure(this@OwnTVApp) }
-                .onFailure { android.util.Log.w("SushiFreeTv", "free playlist setup failed", it) }
+            // Live TV with its section column on screen; the Chilean playlist named "TV chilena".
+            runCatching { tv.own.owntv.features.setup.SushiDefaults.apply(this@OwnTVApp) }
+                .onFailure { android.util.Log.w("SushiDefaults", "defaults failed", it) }
+            // "Películas y series" (Pluto TV): built on this TV from a fresh session, rebuilt before the
+            // session expires. Checked hourly; it only does work when the list is due.
+            while (true) {
+                runCatching { tv.own.owntv.features.setup.SushiPluto.refresh(this@OwnTVApp) }
+                    .onFailure { android.util.Log.w("SushiPluto", "playlist refresh failed", it) }
+                kotlinx.coroutines.delay(60L * 60 * 1000)
+            }
         }
         // Local auto-sync: the paired-only listener and the moments a pass is tried (OwnTV to the
         // front or the back, the network back). Core owns what that means; no hourly check on a TV.
