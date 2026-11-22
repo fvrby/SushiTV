@@ -24,6 +24,7 @@ Exigido por la GPL-3.0 (sección 5a): estos son los archivos que SushiTV modific
 | 2026-11-21 | La foto original (`sushi-icon.png`) queda fuera del repo; solo se suben los recortes | `.gitignore` |
 | 2026-11-21 | Logo dentro de la app = Sushi (barra lateral, inicio, Acerca de) y texto "SushiTV" en vez de "owntv" | `ui/components/BrandLockup.kt`, `res/drawable-nodpi/sushitv_mark.png`, `res/values/sushitv_brand.xml` |
 | 2026-11-21 | Sin selector "Ícono de la app" ni "Logo en color de acento" (el ícono siempre es Sushi) | `SetupWizard.kt`, `SettingsScreen.kt` |
+| 2026-11-22 | Lista "Películas y series gratis" (Pluto TV) agregada sola como segunda lista | `features/setup/SushiFreeTv.kt`, `SushiChileSource.kt`, `OwnTVApp.kt`, `assets/peliculas-series-gratis.m3u`, `sushitv/tools/gratis/pluto.py` |
 | 2026-11-22 | Guías de programación de Chile (open-epg) configuradas solas al abrir la app | `features/setup/SushiGuides.kt`, `OwnTVApp.kt`, `res/values/sushitv_brand.xml` |
 | 2026-11-21 | Textos visibles "OwnTV" → "SushiTV" (salvo los que nombran servicios de OwnTV: metadatos compartidos y traducción) | `res/values*/sushitv_rename.xml`, generados con `sushitv/tools/rename-strings.py` |
 
@@ -130,6 +131,27 @@ Pendientes:
 - **Sin señal oficial en internet** (solo aparecen como retransmisiones desde IPs sueltas, que no se
   incluyen): Mega 2, Mega Ficción, Meganoticias Ahora.
 - **Exclusivos de Zapping** (servicio de pago): los canales "Zapping" y "music" de Zapping.
+
+## Películas y series gratis
+
+Segunda lista, `app/src/main/assets/peliculas-series-gratis.m3u`: **197 canales de Pluto TV** (servicio
+gratuito y legal, con publicidad) disponibles en Chile, en 17 grupos (Películas, Series, Novelas,
+Comedia, Infantil, Anime, Documentales, Crimen, Reality, Deportes, etc.). La app la agrega sola al
+perfil (`features/setup/SushiFreeTv.kt`) cuando la configuración inicial ya terminó, y aparece como su
+propio espacio en el selector de listas del menú lateral.
+
+Para regenerarla (desde Chile: la API de Pluto responde según el país de la conexión):
+
+```powershell
+python -I sushitv\tools\gratis\pluto.py app\src\main\assets\peliculas-series-gratis.m3u
+```
+
+El script arma cada URL con un identificador genérico fijo y **descarta la ubicación** que trae la API
+(`deviceLat`/`deviceLon`), prueba cada canal y quita los duplicados. Sin guía de programación por ahora:
+la guía pública de Pluto para Chile (i.mjh.nz) no corresponde a esta programación.
+
+No se incluyen canales de cable de pago (History, Cartoon Network, Discovery…): no tienen señal
+gratuita oficial, y las que circulan son retransmisiones piratas.
 
 ## Actualizaciones por Wi-Fi
 

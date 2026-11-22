@@ -36,7 +36,9 @@
 1	performance	app/src/main/java/tv/own/owntv/MainActivity.kt	profile-id-loaded
 1	performance	app/src/main/java/tv/own/owntv/MainActivity.kt	profiles-loaded
 1	compiler	app/src/main/java/tv/own/owntv/OwnTVApp.kt	DEPRECATION
+1	log	app/src/main/java/tv/own/owntv/OwnTVApp.kt	SushiFreeTv
 1	log	app/src/main/java/tv/own/owntv/OwnTVApp.kt	SushiGuides
+1	log	app/src/main/java/tv/own/owntv/OwnTVApp.kt	free playlist setup failed
 1	log	app/src/main/java/tv/own/owntv/OwnTVApp.kt	guide setup failed
 1	file-path	app/src/main/java/tv/own/owntv/OwnTVApp.kt	image_cache
 1	performance	app/src/main/java/tv/own/owntv/OwnTVApp.kt	koin-started
@@ -653,7 +655,10 @@
 5	empty	app/src/main/java/tv/own/owntv/features/setup/SetupWizard.kt	\0
 2	technical	app/src/main/java/tv/own/owntv/features/setup/SetupWizard.kt	+
 1	file-path	app/src/main/java/tv/own/owntv/features/setup/SushiChileSource.kt	canales-chile.m3u
-1	url	app/src/main/java/tv/own/owntv/features/setup/SushiChileSource.kt	https://raw.githubusercontent.com/${BuildConfig.SUSHITV_REPO}/HEAD/app/src/main/assets/$ASSET
+1	url	app/src/main/java/tv/own/owntv/features/setup/SushiChileSource.kt	https://raw.githubusercontent.com/${BuildConfig.SUSHITV_REPO}/HEAD/app/src/main/assets/$asset
+1	file-path	app/src/main/java/tv/own/owntv/features/setup/SushiChileSource.kt	peliculas-series-gratis.m3u
+1	preference-key	app/src/main/java/tv/own/owntv/features/setup/SushiFreeTv.kt	free_tv_version
+1	preference-key	app/src/main/java/tv/own/owntv/features/setup/SushiFreeTv.kt	sushitv
 1	preference-key	app/src/main/java/tv/own/owntv/features/setup/SushiGuides.kt	guides_version
 1	url	app/src/main/java/tv/own/owntv/features/setup/SushiGuides.kt	https://www.open-epg.com/files/chile1.xml
 1	url	app/src/main/java/tv/own/owntv/features/setup/SushiGuides.kt	https://www.open-epg.com/files/chile2.xml
