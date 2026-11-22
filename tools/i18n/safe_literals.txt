@@ -658,6 +658,7 @@
 2	technical	app/src/main/java/tv/own/owntv/features/setup/SetupWizard.kt	+
 1	file-path	app/src/main/java/tv/own/owntv/features/setup/SushiChileSource.kt	canales-chile.m3u
 1	url	app/src/main/java/tv/own/owntv/features/setup/SushiChileSource.kt	https://raw.githubusercontent.com/${BuildConfig.SUSHITV_REPO}/HEAD/app/src/main/assets/$asset
+1	file-path	app/src/main/java/tv/own/owntv/features/setup/SushiChileSource.kt	mundo.m3u
 1	file-path	app/src/main/java/tv/own/owntv/features/setup/SushiChileSource.kt	peliculas-series-gratis.m3u
 1	preference-key	app/src/main/java/tv/own/owntv/features/setup/SushiDefaults.kt	defaults_version
 1	preference-key	app/src/main/java/tv/own/owntv/features/setup/SushiDefaults.kt	sushitv
@@ -671,6 +672,7 @@
 1	protocol	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	#
 1	protocol	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	#EXTINF
 2	protocol	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	#EXTM3U
+1	protocol	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	#SUSHITV-MUSICA:
 1	url	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	$BOOT_URL?$query
 1	url	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	$stitcher/v2/stitch/hls/channel/$channelId/master.m3u8?$params&jwt=$token&masterJWTPassthrough=true
 1	protocol	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	&
@@ -678,18 +680,14 @@
 1	protocol	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	1.0.0
 1	protocol	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	12
 1	protocol	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	13 Festival
-1	protocol	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	13 Teleseries
 1	protocol	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	9.10.0
 1	protocol	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	=
-1	protocol	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	Clásicos y retro
-1	protocol	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	Comedia
 1	log	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	HTTP ${conn.responseCode}
 1	protocol	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	Mozilla/5.0 (Linux; Android 12; TV) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36
 2	protocol	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	Música
-1	protocol	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	Novelas
-1	protocol	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	Películas
+1	log	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	Pluto session failed; building the other lists
 1	protocol	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	Radios con video
-1	protocol	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	Series
+1	log	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	SushiPluto
 1	protocol	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	UTF-8
 1	protocol	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	User-Agent
 1	protocol	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	appName
@@ -707,6 +705,7 @@
 1	regex	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	group-title="([^"]*)"
 1	url	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	https://boot.pluto.tv/v4/start
 1	preference-key	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	lists_version
+1	file-path	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	mundo-en-vivo.m3u
 1	file-path	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	musica.m3u
 1	file-path	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	peliculas.m3u
 1	protocol	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	pluto-
@@ -723,6 +722,8 @@
 1	log	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	sushitv_lists
 1	regex	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	tvg-id="$ID_PREFIX([0-9a-f]+)"
 3	protocol	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	web
+1	log	app/src/main/java/tv/own/owntv/features/setup/SushiWelcome.kt	SushiWelcome
+1	log	app/src/main/java/tv/own/owntv/features/setup/SushiWelcome.kt	welcome skipped
 3	technical	app/src/main/java/tv/own/owntv/features/shell/OwnTVShell.kt	\0
 1	protocol	app/src/main/java/tv/own/owntv/features/shell/OwnTVShell.kt	ass
 1	performance	app/src/main/java/tv/own/owntv/features/shell/OwnTVShell.kt	epg-preload

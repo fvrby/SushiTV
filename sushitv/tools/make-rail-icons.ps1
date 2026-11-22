@@ -1,5 +1,6 @@
-# Íconos del menú lateral de SushiTV (96 px, cuadrado redondeado): bandera de Chile, Plutón con su
-# corazón, nota musical, claqueta y tele retro. Dibujados aquí (sin logos de marcas).
+# Íconos del menú lateral de SushiTV (96 px, cuadrado redondeado): bandera de Chile, Pluto TV, nota
+# musical y globo terráqueo. El de Pluto es su ícono oficial (marcas/pluto-tv.png, de
+# pluto.tv/favicon/large.png); los demás se dibujan aquí.
 # Uso:  powershell -ExecutionPolicy Bypass -File sushitv\tools\make-rail-icons.ps1
 param([string]$Res = (Join-Path $PSScriptRoot "..\..\app\src\main\res\drawable-nodpi"))
 Add-Type -AssemblyName System.Drawing
@@ -47,17 +48,11 @@ New-Icon "chile" {
 }
 New-Icon "pluto" {
     param($g)
-    $g.FillRectangle((Grad "#1E2250" "#0B0D1F"), 0, 0, $S, $S)
-    foreach ($s in @(@(12, 14, 2), @(80, 20, 2), @(70, 84, 2), @(18, 78, 1.5), @(86, 56, 1.5))) { $g.FillEllipse((Brush "#FFFFFF"), $s[0], $s[1], $s[2] * 2, $s[2] * 2) }
-    $planet = New-Object System.Drawing.Drawing2D.GraphicsPath; $planet.AddEllipse(18, 18, 60, 60)
-    $pb = New-Object System.Drawing.Drawing2D.PathGradientBrush $planet
-    $pb.CenterPoint = New-Object System.Drawing.PointF 38, 36; $pb.CenterColor = C "#E8C9A0"; $pb.SurroundColors = @((C "#8A5A3C"))
-    $g.FillPath($pb, $planet)
-    # The heart (Tombaugh Regio), lower left of the disc.
-    $h = New-Object System.Drawing.Drawing2D.GraphicsPath
-    $h.AddBezier(44, 50, 44, 42, 32, 40, 32, 49); $h.AddBezier(32, 49, 32, 56, 40, 60, 44, 66)
-    $h.AddBezier(44, 66, 48, 60, 56, 56, 56, 49); $h.AddBezier(56, 49, 56, 40, 44, 42, 44, 50); $h.CloseFigure()
-    $g.FillPath((New-Object System.Drawing.SolidBrush ([System.Drawing.Color]::FromArgb(235, 250, 238, 222))), $h)
+    $g.FillRectangle((Brush "#000000"), 0, 0, $S, $S)
+    $logo = [System.Drawing.Image]::FromFile((Join-Path $PSScriptRoot "marcas\pluto-tv.png"))
+    $g.InterpolationMode = "HighQualityBicubic"
+    $g.DrawImage($logo, 4, 4, $S - 8, $S - 8)
+    $logo.Dispose()
 }
 New-Icon "music" {
     param($g)
@@ -69,24 +64,17 @@ New-Icon "music" {
     $beam.AddPolygon([System.Drawing.PointF[]]@((New-Object System.Drawing.PointF 38, 26), (New-Object System.Drawing.PointF 76, 18), (New-Object System.Drawing.PointF 76, 30), (New-Object System.Drawing.PointF 38, 38)))
     $g.FillPath($w, $beam)
 }
-New-Icon "movies" {
+New-Icon "world" {
     param($g)
-    $g.FillRectangle((Grad "#F43F5E" "#9F1239"), 0, 0, $S, $S)
-    $g.FillPath((Brush "#FFFFFF"), (Rounded 18 42 60 36 5))
-    $g.FillPath((Brush "#1F2937"), (Rounded 18 28 60 13 3))
-    $w = Brush "#FFFFFF"
-    foreach ($x in @(26, 42, 58)) {
-        $g.FillPolygon($w, [System.Drawing.PointF[]]@((New-Object System.Drawing.PointF $x, 28), (New-Object System.Drawing.PointF ($x + 8), 28), (New-Object System.Drawing.PointF ($x + 2), 41), (New-Object System.Drawing.PointF ($x - 6), 41)))
-    }
-    $g.FillPolygon((Brush "#9F1239"), [System.Drawing.PointF[]]@((New-Object System.Drawing.PointF 42, 50), (New-Object System.Drawing.PointF 42, 70), (New-Object System.Drawing.PointF 58, 60)))
-}
-New-Icon "series" {
-    param($g)
-    $g.FillRectangle((Grad "#14B8A6" "#0F766E"), 0, 0, $S, $S)
+    $g.FillRectangle((Grad "#22D3EE" "#1D4ED8"), 0, 0, $S, $S)
+    $disc = New-Object System.Drawing.Drawing2D.GraphicsPath; $disc.AddEllipse(18, 18, 60, 60)
+    $g.FillPath((New-Object System.Drawing.SolidBrush ([System.Drawing.Color]::FromArgb(60, 255, 255, 255))), $disc)
     $pen = New-Object System.Drawing.Pen (C "#FFFFFF"), 4
-    $pen.StartCap = "Round"; $pen.EndCap = "Round"
-    $g.DrawLine($pen, 48, 30, 36, 16); $g.DrawLine($pen, 48, 30, 60, 16)
-    $g.FillPath((Brush "#FFFFFF"), (Rounded 16 30 64 46 8))
-    $g.FillPath((Brush "#134E4A"), (Rounded 22 36 52 34 5))
-    $g.FillPolygon((Brush "#FFFFFF"), [System.Drawing.PointF[]]@((New-Object System.Drawing.PointF 42, 44), (New-Object System.Drawing.PointF 42, 62), (New-Object System.Drawing.PointF 57, 53)))
+    $g.SetClip($disc, "Intersect")
+    $g.DrawEllipse($pen, 34, 18, 28, 60)                 # meridians
+    $g.DrawLine($pen, 48, 16, 48, 80)
+    $g.DrawLine($pen, 16, 48, 80, 48)                    # equator
+    $g.DrawLine($pen, 20, 33, 76, 33); $g.DrawLine($pen, 20, 63, 76, 63)
+    $g.ResetClip(); $g.SetClip((Rounded 0 0 $S $S $R))
+    $g.DrawEllipse($pen, 18, 18, 60, 60)
 }

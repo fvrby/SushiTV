@@ -92,20 +92,4 @@ $bmp, $g = New-Canvas 512 512
 Draw-Cat $g 20 20 472 18
 $g.Dispose(); Save $bmp (Join-Path $Res "drawable-nodpi\sushitv_mark.png"); $bmp.Dispose()
 
-# 6) Pixel-art Sushi for the welcome animation: the in-app mark shrunk to 48x48 and lightly posterized
-#    (8 levels per channel) so every pixel reads as a deliberate block. Transparent outside the circle.
-$markPath = Join-Path $Res "drawable-nodpi\sushitv_mark.png"
-$mark = [System.Drawing.Image]::FromFile((Resolve-Path $markPath))
-$px = New-Object System.Drawing.Bitmap 48, 48, ([System.Drawing.Imaging.PixelFormat]::Format32bppArgb)
-$g = [System.Drawing.Graphics]::FromImage($px)
-$g.InterpolationMode = "HighQualityBicubic"; $g.PixelOffsetMode = "HighQuality"
-$g.DrawImage($mark, 0, 0, 48, 48); $g.Dispose(); $mark.Dispose()
-function Snap([int]$v) { [int]([math]::Min(255, [math]::Round($v / 36.0) * 36)) }
-for ($y = 0; $y -lt 48; $y++) { for ($x = 0; $x -lt 48; $x++) {
-    $c = $px.GetPixel($x, $y)
-    if ($c.A -lt 140) { $px.SetPixel($x, $y, [System.Drawing.Color]::Transparent); continue }
-    $px.SetPixel($x, $y, [System.Drawing.Color]::FromArgb(255, (Snap $c.R), (Snap $c.G), (Snap $c.B)))
-} }
-Save $px (Join-Path $Res "drawable-nodpi\sushitv_pixel.png"); $px.Dispose()
-
 $src.Dispose()

@@ -61,3 +61,8 @@ replay_pid*.log
 # SushiTV: original photo stays local (only the cropped app images are committed)
 /sushi-icon.png
 /avatares/
+
+# Grabaciones originales de Sushi para la bienvenida (solo los ruiditos elegidos van al APK)
+/sushitv/tools/bienvenida/audios/
+/sushitv/tools/bienvenida/out/
+/img/

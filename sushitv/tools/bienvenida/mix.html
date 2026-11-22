@@ -1,0 +1,81 @@
+<!doctype html><meta charset="utf-8"><title>Bienvenida SushiTV — laboratorio de sonido</title>
+<style>body{font:14px system-ui;background:#16110d;color:#f3e6d6;margin:0;padding:12px}canvas{width:100%;aspect-ratio:16/9;border-radius:12px;display:block;background:#0E0B09}
+button{font:14px system-ui;margin:4px 4px 4px 0;padding:6px 12px;border-radius:8px;border:1px solid #8B5A3C;background:#2a1f18;color:#f3e6d6;cursor:pointer}
+table{border-collapse:collapse;margin-top:8px}td{padding:3px 8px;border-bottom:1px solid #3a2a20}#st{opacity:.8;margin-left:8px}</style>
+<canvas id="c"></canvas>
+<div><button id="go">▶ Ver con sonido</button><button id="only">🐾 Solo los ruiditos unidos</button><span id="st"></span></div>
+<table id="tbl"></table>
+<script src="anim.js"></script>
+<script>
+// The 8 moments found in the 4 recordings; `at` = where it plays in the 10 s welcome (s), `on` = used.
+const SEGS=[
+ {id:1,f:'a',s:1.14,e:1.70,at:7.32,on:true},
+ {id:2,f:'b',s:1.22,e:1.66,at:6.26,on:true},
+ {id:3,f:'b',s:2.22,e:2.58,at:2.45,on:false},
+ {id:4,f:'b',s:4.50,e:4.84,at:8.70,on:true},
+ {id:5,f:'b',s:6.24,e:6.56,at:9.10,on:true},
+ {id:6,f:'c',s:1.26,e:1.62,at:3.40,on:false},
+ {id:7,f:'c',s:2.80,e:3.18,at:6.82,on:true},
+ {id:8,f:'d',s:1.24,e:1.82,at:8.00,on:true},
+];
+const SR=22050,DUR=10,N=SR*DUR,OUT_SR=48000,TAU=Math.PI*2,mf=m=>440*Math.pow(2,(m-69)/12);
+const S=new Float32Array(N);
+function add(i,v){if(i>=0&&i<N)S[i]+=v}
+function pluck(t0,f,vol,len){len=len||1.3;const s0=Math.floor(t0*SR),n=Math.floor(len*SR);for(let k=0;k<n;k++){const t=k/SR,a=Math.min(1,t/0.004);const v=Math.sin(TAU*f*t)*Math.exp(-t/0.6)+0.35*Math.sin(2*TAU*f*t)*Math.exp(-t/0.25)+0.12*Math.sin(3*TAU*f*t)*Math.exp(-t/0.12);add(s0+k,vol*a*v)}}
+function bass(t0,f,vol){const s0=Math.floor(t0*SR),n=Math.floor(0.6*SR);for(let k=0;k<n;k++){const t=k/SR,a=Math.min(1,t/0.01);add(s0+k,vol*a*(Math.sin(TAU*f*t)*Math.exp(-t/0.32)+0.25*Math.sin(2*TAU*f*t)*Math.exp(-t/0.15)))}}
+function pad(t0,dur,ms,vol){const s0=Math.floor(t0*SR),n=Math.floor(dur*SR);for(const m of ms){const f=mf(m);for(let k=0;k<n;k++){const t=k/SR,e=Math.max(0,Math.min(1,t/0.4,(dur-t)/0.5));add(s0+k,vol*e*(Math.sin(TAU*f*t)+0.5*Math.sin(TAU*f*1.004*t)))}}}
+function glide(t0,dur,f0,f1,vol,vib,vf){vib=vib||0;vf=vf||6;const s0=Math.floor(t0*SR),n=Math.floor(dur*SR);let ph=0;for(let k=0;k<n;k++){const u=k/n,t=k/SR,f=f0*Math.pow(f1/f0,u)*(1+vib*Math.sin(TAU*vf*t));ph+=TAU*f/SR;const e=Math.max(0,Math.min(1,u/0.1,(1-u)/0.2));add(s0+k,vol*e*Math.sin(ph))}}
+let seed=12345;function rnd(){seed=(seed*1103515245+12345)%2147483648;return seed/1073741824-1}
+function noise(t0,dur,vol,lp){const s0=Math.floor(t0*SR),n=Math.floor(dur*SR);let y=0;for(let k=0;k<n;k++){const u=k/n;y+=lp*(rnd()-y);add(s0+k,vol*Math.min(1,u/0.05)*(1-u)*y)}}
+function boing(t0,dur,f,vol){const s0=Math.floor(t0*SR),n=Math.floor(dur*SR);let ph=0;for(let k=0;k<n;k++){const t=k/SR,d=Math.exp(-t/0.25);ph+=TAU*f*(1+0.08*d*Math.sin(TAU*14*t))/SR;add(s0+k,vol*Math.min(1,t/0.01)*d*Math.sin(ph))}}
+glide(0.25,0.6,120,880,0.12);noise(0.85,0.25,0.5,0.5);bass(0.9,mf(36),0.3);
+glide(1.6,0.7,500,1000,0.09,0.02,6);glide(2.32,0.18,1000,780,0.08);
+for(const [a,f0] of[[2.42,300],[2.54,260]])glide(a,0.12,f0,170,0.32);
+boing(2.5,0.8,330,0.08);
+for(const [b,ch] of[[0,[48,52,55,60]],[1,[53,57,60,65]],[2,[55,59,62,67]],[3,[53,57,60,64]]]){const t=1.5+b*2;pad(t,2.1,ch.slice(1).map(x=>x+12),0.018);bass(t,mf(ch[0]-12),0.22);bass(t+1,mf(ch[0]-12+7),0.16)}
+for(const [t,m] of[[1.5,79],[2.0,76],[2.5,79],[3.0,84],[3.5,81],[4.0,77],[4.5,81],[5.0,84],[6.0,83],[6.5,86],[7.0,84],[7.5,81],[8.0,79],[8.5,76]])pluck(t,mf(m),0.17);
+[84,88,91,96].forEach((m,i)=>pluck(3.45+i*0.07,mf(m),0.1,0.9));
+noise(3.92,0.03,0.25,0.9);glide(4.7,0.06,600,1200,0.14);pluck(4.76,mf(88),0.1);
+[72,74,76,79,81,84,88].forEach((m,i)=>pluck(5.2+i*0.09+0.22,mf(m),0.16));
+[79,81,84,86,88,86,84,81].forEach((m,i)=>pluck(6.6+i*0.11,mf(m),0.06,0.8));
+[60,64,67,72].forEach(m=>pluck(9.0,mf(m),0.1,1.0));bass(9.0,mf(36),0.25);
+{let pk=0;for(let i=0;i<N;i++){S[i]=Math.tanh(1.3*S[i]);pk=Math.max(pk,Math.abs(S[i]))}for(let i=0;i<N;i++)S[i]*=0.8/pk}
+
+const BUF={};let actx=null,srcs=[],mixed=null,t0=null;
+const st=m=>document.getElementById('st').textContent=m;
+function ac(){if(!actx)actx=new AudioContext({sampleRate:OUT_SR});actx.resume();return actx}
+async function load(){const c=new OfflineAudioContext(1,OUT_SR,OUT_SR);for(const f of'abcd'){BUF[f]=await c.decodeAudioData(await (await fetch('audios/'+f+'.ogg')).arrayBuffer())}}
+function segPeak(s){const b=BUF[s.f],d=b.getChannelData(0),sr=b.sampleRate;let p=0;for(let i=Math.floor(s.s*sr);i<Math.floor(s.e*sr);i++)p=Math.max(p,Math.abs(d[i]));return p||1}
+// Cat moments: each brought to the same peak, 25 ms fades, at its slot. The music dips a little under them.
+function addCats(c,dest,base,withMusicDuck,music){const used=SEGS.filter(s=>s.on);
+  for(const s of used){const src=c.createBufferSource(),g=c.createGain(),len=s.e-s.s,gain=0.62/segPeak(s),w=base+s.at;src.buffer=BUF[s.f];
+    g.gain.setValueAtTime(0,w);g.gain.linearRampToValueAtTime(gain,w+0.025);g.gain.setValueAtTime(gain,w+len-0.025);g.gain.linearRampToValueAtTime(0,w+len);
+    if(w>base+9.3){}src.connect(g);g.connect(dest);src.start(w,s.s,len)}
+  if(withMusicDuck&&music){for(const s of used){const w=base+s.at;music.gain.setValueAtTime(1,w-0.05);music.gain.linearRampToValueAtTime(0.65,w);music.gain.setValueAtTime(0.65,w+(s.e-s.s));music.gain.linearRampToValueAtTime(1,w+(s.e-s.s)+0.1)}}}
+async function render(){const c=new OfflineAudioContext(1,Math.round(OUT_SR*DUR),OUT_SR);
+  const mb=c.createBuffer(1,N,SR);mb.copyToChannel(S,0);const ms=c.createBufferSource();ms.buffer=mb;const mg=c.createGain();ms.connect(mg);mg.connect(c.destination);ms.start(0);
+  const cg=c.createGain();cg.connect(c.destination);
+  cg.gain.setValueAtTime(1,9.3);cg.gain.linearRampToValueAtTime(0,10);
+  addCats(c,cg,0,true,mg);
+  const r=await c.startRendering(),d=r.getChannelData(0);let pk=0;for(const v of d)pk=Math.max(pk,Math.abs(v));const k=pk>0.89?0.89/pk:1;for(let i=0;i<d.length;i++)d[i]*=k;
+  return r}
+function stopAll(){srcs.forEach(s=>{try{s.stop()}catch(e){}});srcs=[]}
+document.getElementById('go').onclick=async()=>{const c=ac();stopAll();st('mezclando…');mixed=await render();const s=c.createBufferSource();s.buffer=mixed;s.connect(c.destination);const w=c.currentTime+0.05;s.start(w);srcs.push(s);t0=performance.now()+50;st('')};
+document.getElementById('only').onclick=()=>{const c=ac();stopAll();const used=SEGS.filter(s=>s.on).sort((a,b)=>a.at-b.at);let w=c.currentTime+0.05;
+  for(const s of used){const src=c.createBufferSource(),g=c.createGain();src.buffer=BUF[s.f];g.gain.value=0.62/segPeak(s);src.connect(g);g.connect(c.destination);src.start(w,s.s,s.e-s.s);srcs.push(src);w+=s.e-s.s+0.12}t0=null};
+function table(){const tb=document.getElementById('tbl');tb.innerHTML='<tr><td></td><td>#</td><td>audio</td><td>momento</td><td>suena en</td><td>usar</td></tr>';
+  SEGS.forEach(s=>{const tr=document.createElement('tr');const b=document.createElement('button');b.textContent='▶';b.onclick=()=>{const c=ac();stopAll();const src=c.createBufferSource(),g=c.createGain();src.buffer=BUF[s.f];g.gain.value=0.62/segPeak(s);src.connect(g);g.connect(c.destination);src.start(c.currentTime+0.02,s.s,s.e-s.s);srcs.push(src)};
+    const td=document.createElement('td');td.appendChild(b);tr.appendChild(td);tr.insertAdjacentHTML('beforeend',`<td>${s.id}</td><td>${'abcd'.indexOf(s.f)+1}</td><td>${s.s.toFixed(2)}–${s.e.toFixed(2)} s</td><td>${s.at.toFixed(2)} s</td>`);
+    const cb=document.createElement('input');cb.type='checkbox';cb.checked=s.on;cb.onchange=()=>s.on=cb.checked;const t2=document.createElement('td');t2.appendChild(cb);tr.appendChild(t2);tb.appendChild(tr)})}
+// Exports for saving: 16-bit WAV of the final mix at `rate` Hz.
+window.exportWav=async rate=>{const r=await render();const c=new OfflineAudioContext(1,Math.round(rate*DUR),rate);const s=c.createBufferSource();s.buffer=r;s.connect(c.destination);s.start(0);const d=(await c.startRendering()).getChannelData(0);
+  const buf=new ArrayBuffer(44+d.length*2),v=new DataView(buf);const w=(o,s)=>[...s].forEach((ch,i)=>v.setUint8(o+i,ch.charCodeAt(0)));
+  w(0,'RIFF');v.setUint32(4,36+d.length*2,true);w(8,'WAVEfmt ');v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);v.setUint32(24,rate,true);v.setUint32(28,rate*2,true);v.setUint16(32,2,true);v.setUint16(34,16,true);w(36,'data');v.setUint32(40,d.length*2,true);
+  for(let i=0;i<d.length;i++)v.setInt16(44+i*2,Math.max(-1,Math.min(1,d[i]))*32767,true);
+  const res=await fetch('/save?name=bienvenida.wav',{method:'POST',body:buf});return res.status+' '+buf.byteLength};
+const cv=document.getElementById('c'),cx=cv.getContext('2d');
+function fit(){const r=cv.getBoundingClientRect(),d=window.devicePixelRatio||1;cv.width=Math.round(r.width*d);cv.height=Math.round(r.width*9/16*d)}
+fit();addEventListener('resize',fit);
+function frame(now){const t=t0===null?7.6:Math.max(0,(now-t0)/1000);drawScene(cx,Math.min(t,10.2),cv.width);requestAnimationFrame(frame)}
+load().then(()=>{table();st('listo');requestAnimationFrame(frame)}).catch(e=>st('ERR '+e));
+</script>

@@ -5,14 +5,14 @@
     <!-- In-app wordmark (BrandLockup.Wordmark): "Sushi" in cream, "TV" in the accent colour. -->
     <string name="sushitv_word_sushi" translatable="false">Sushi</string>
     <string name="sushitv_word_tv" translatable="false">TV</string>
-    <!-- Line under the logo in the pixel-art welcome (SushiWelcome). -->
+    <!-- Line under the logo in the welcome animation (SushiWelcome), and its corner hint. -->
     <string name="sushitv_welcome" translatable="false">¡Te damos la bienvenida!</string>
+    <string name="sushitv_welcome_skip" translatable="false">Presiona OK para saltar</string>
     <!-- Rail entries (SushiRail) = the playlists of the same name (SushiPluto builds all but TV chilena). -->
     <string name="sushitv_rail_tv_chilena" translatable="false">TV chilena</string>
     <string name="sushitv_rail_pluto" translatable="false">Pluto TV</string>
     <string name="sushitv_rail_music" translatable="false">Música</string>
-    <string name="sushitv_rail_movies" translatable="false">Películas</string>
-    <string name="sushitv_rail_series" translatable="false">Series</string>
+    <string name="sushitv_rail_world" translatable="false">Mundo</string>
     <!-- Program guide sources SushiGuides adds on its own (Settings › EPG sources). -->
     <string name="sushitv_guide_chile_2" translatable="false">Guía Chile (nacionales)</string>
     <string name="sushitv_guide_chile_1" translatable="false">Guía Chile (La Red, UCV, TVU)</string>

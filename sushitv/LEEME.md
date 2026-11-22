@@ -24,9 +24,10 @@ Exigido por la GPL-3.0 (sección 5a): estos son los archivos que SushiTV modific
 | 2026-11-21 | La foto original (`sushi-icon.png`) queda fuera del repo; solo se suben los recortes | `.gitignore` |
 | 2026-11-21 | Logo dentro de la app = Sushi (barra lateral, inicio, Acerca de) y texto "SushiTV" en vez de "owntv" | `ui/components/BrandLockup.kt`, `res/drawable-nodpi/sushitv_mark.png`, `res/values/sushitv_brand.xml` |
 | 2026-11-21 | Sin selector "Ícono de la app" ni "Logo en color de acento" (el ícono siempre es Sushi) | `SetupWizard.kt`, `SettingsScreen.kt` |
+| 2026-11-22 | Menú: TV chilena, Pluto TV, Música y **Mundo** (canales gratis de otros países: anime, Japón y Corea, cine y series, y música por género que también sale en Música); fuera Películas y Series (sus canales siguen en las secciones de Pluto TV); ícono oficial de Pluto TV; EnerGeek (Fan, Retro y Radio) en TV chilena | `features/setup/SushiPluto.kt`, `SushiRail.kt`, `SushiChileSource.kt`, `assets/mundo.m3u`, `assets/canales-chile.m3u`, `res/values/sushitv_brand.xml`, `res/drawable-nodpi/sushitv_rail_*.png`, `sushitv/tools/make-rail-icons.ps1`, `sushitv/tools/marcas/pluto-tv.png`, `sushitv/tools/gratis/mundo*.py`, `envivo.py`, `sushitv/tools/canales/curate.py` |
 | 2026-11-22 | Íconos propios en el menú (bandera, Plutón, nota, claqueta, tele) y título de TV en vivo = nombre de la lista; arranque más liviano (guías cada 24 h, TV chilena cada 12 h, trabajo de SushiTV 60 s después de abrir, reintentos solo de lo que falta) | `sushitv/tools/make-rail-icons.ps1`, `res/drawable-nodpi/sushitv_rail_*.png`, `StageRail.kt`, `SushiRail.kt`, `live/LiveViewModel.kt`, `LiveStage.kt`, `LiveScreen.kt`, `SushiGuides.kt`, `SushiDefaults.kt`, `SushiChileSource.kt`, `SushiPluto.kt`, `OwnTVApp.kt` |
 | 2026-11-22 | Menú: TV chilena, Pluto TV, Música, Películas y Series (listas armadas en la tele); fuera Deportes, Guía y Películas/Series a pedido; bienvenida de ~4 s | `features/setup/SushiPluto.kt`, `SushiRail.kt`, `components/StageRail.kt`, `SushiWelcome.kt`, `res/values/sushitv_brand.xml` |
-| 2026-11-22 | Animación de bienvenida pixel art con Sushi al abrir la app (menos de 2 s, sin tomar el foco) | `features/setup/SushiWelcome.kt`, `MainActivity.kt`, `res/drawable-nodpi/sushitv_pixel.png` (paso 6 de `make-brand.ps1`) |
+| 2026-11-22 | Bienvenida de 10 s dibujada con código (sin imágenes): tele retro que se enciende, Sushi con sus manchas reales, cola, corazón, "SushiTV" letra por letra y parpadeo lento; sonido de 10 s con música hecha en código y ruiditos reales de Sushi; cualquier botón la salta | `features/setup/SushiWelcome.kt`, `MainActivity.kt` (dispatchKeyEvent), `res/raw/sushitv_bienvenida.wav`, `res/values/sushitv_brand.xml`, `sushitv/tools/bienvenida/` |
 | 2026-11-22 | Avatares = fotos de los gatos (sin dibujos predefinidos ni silueta "sin avatar"); se mantiene "Tu propia foto" | `ui/components/OwnTVAvatar.kt`, `AvatarPickerDialog.kt`, `ProfileComponents.kt`, `SetupWizard.kt`, `StageRail.kt`, `res/drawable-nodpi/sushitv_avatar_*.png` (de `sushitv/tools/make-avatars.ps1`; fotos originales en `avatares/`, fuera de git) |
 | 2026-11-22 | Íconos "TV chilena" y "Películas y series" en el menú lateral en lugar de "TV en vivo"; TV en vivo en diseño Separado | `components/StageRail.kt`, `shell/OwnTVShell.kt`, `features/setup/SushiRail.kt`, `features/setup/SushiDefaults.kt` |
 | 2026-11-22 | Lista "Películas y series" (Pluto TV) armada en la tele con sesión propia y renovada cada 12 h | `features/setup/SushiPluto.kt`, `SushiChileSource.kt`, `OwnTVApp.kt`, `assets/peliculas-series-gratis.m3u`, `sushitv/tools/gratis/pluto.py` |
@@ -80,11 +81,12 @@ muestra su propio puerto y un código de emparejamiento (`adb pair IP:PUERTO`).
 
 ## Canales
 
-La lista está en `app/src/main/assets/canales-chile.m3u` (formato M3U estándar): **190 canales** en
-12 grupos (Nacionales, Noticias, Deportes, Cultura e infantil, Entretención, Música, Radios con video,
-Universitarios, Regionales, Institucionales, Religiosos y Paisajes en vivo). Fuentes:
+La lista está en `app/src/main/assets/canales-chile.m3u` (formato M3U estándar): **193 canales** en
+13 grupos (Nacionales, Noticias, Deportes, Cultura e infantil, Geek y anime, Entretención, Música, Radios
+con video, Universitarios, Regionales, Institucionales, Religiosos y Paisajes en vivo). Fuentes:
 [Alplox/json-teles](https://github.com/Alplox/json-teles), [iptv-org](https://github.com/iptv-org/iptv)
-y [Free-TV/IPTV](https://github.com/Free-TV/IPTV). Solo señales gratuitas; se descartan las
+y [Free-TV/IPTV](https://github.com/Free-TV/IPTV); los de EnerGeek (canal geek de Santiago) con los enlaces
+que EnerGeek publica en la lista de [TDTChannels](https://www.tdtchannels.com). Solo señales gratuitas; se descartan las
 retransmisiones desde IPs sueltas y los canales de pago (TCM, Nick Jr.) o extranjeros.
 
 ### Refrescar la lista
@@ -125,8 +127,7 @@ en `https://epgshare01.online/epgshare01/epg_ripper_CL1.xml.gz` (id `TV.Chile.cl
 regionales y las radios no tienen guía en ninguna fuente pública.
 
 - **Sin repo configurado:** la lista viaja dentro del APK. Para cambiarla hay que recompilar.
-- **Con `sushitv.githubRepo` configurado:** la app la lee desde GitHub y la refresca cada vez que
-  se abre. Para arreglar un enlace basta con editar el archivo en GitHub.
+- **Con `sushitv.githubRepo` configurado:** la app la lee desde GitHub y la refresca cada 12 h. Para arreglar un enlace basta con editar el archivo en GitHub.
 
 Pendientes:
 - **TVN** (señal principal): su reproductor web exige un token que cambia.
@@ -137,14 +138,25 @@ Pendientes:
   incluyen): Mega 2, Mega Ficción, Meganoticias Ahora.
 - **Exclusivos de Zapping** (servicio de pago): los canales "Zapping" y "music" de Zapping.
 
-## Menú lateral: "TV chilena" y "Películas y series"
+## Menú lateral
 
-En vez de un solo "TV en vivo", el menú tiene dos íconos (`features/setup/SushiRail.kt`,
+En vez de un solo "TV en vivo", el menú tiene cuatro íconos (`features/setup/SushiRail.kt`,
 `StageRail.kt`, `OwnTVShell.kt`). Cada uno abre TV en vivo con su lista elegida en el selector de
 listas de OwnTV, así cada lista muestra solo sus propias secciones. `SushiDefaults.kt` deja TV en vivo
 en el diseño **Separado** (columna de secciones siempre visible) y llama "TV chilena" a la lista chilena.
 
-## Películas y series (Pluto TV)
+| Ícono | Lista | Qué trae |
+|---|---|---|
+| Bandera | TV chilena | `canales-chile.m3u` |
+| Pluto TV (su ícono oficial) | Pluto TV | todos los canales de Pluto, con sus secciones (Películas, Series, Anime…) |
+| Nota musical | Música | la música de las tres: grupos Música y Radios con video de Chile, 13 Festival, Música de Pluto y los géneros musicales de Mundo |
+| Globo | Mundo | `mundo.m3u`: canales gratis de otros países |
+
+Pluto TV, Música y Mundo las arma la tele (`SushiPluto.kt`) y las rehace cada 12 h. Hasta la versión
+2026.11.8 hubo también "Películas" y "Series"; la app las borra sola (sus canales siguen en Pluto TV).
+Los íconos salen de `sushitv/tools/make-rail-icons.ps1`.
+
+## Pluto TV
 
 **196 canales de Pluto TV** (gratis y legal, con publicidad) disponibles en Chile, en 17 secciones
 (Películas, Series, Novelas, Comedia, Infantil, Anime, Documentales, Crimen, Reality, Deportes, etc.).
@@ -156,7 +168,7 @@ on this device"*. Por eso:
 - `app/src/main/assets/peliculas-series-gratis.m3u` es solo una **plantilla** (nombre, sección, logo e
   id `pluto-<id>` de cada canal, sin URLs de sesión).
 - La app (`features/setup/SushiPluto.kt`) pide una sesión anónima en la tele, escribe la lista con URLs
-  válidas en el almacenamiento de la app, la importa como "Películas y series" y la rehace cada 12 h. La
+  válidas en el almacenamiento de la app, la importa como "Pluto TV" (y su música en "Música") y la rehace cada 12 h. La
   sesión incluye la ubicación aproximada de la tele: queda en la tele y solo viaja a Pluto.
 - Una sesión no acepta muchos canales abiertos a la vez: se ve un canal por vez (Multivista con canales
   de Pluto puede fallar).
@@ -173,6 +185,65 @@ programación.
 
 No se incluyen canales de cable de pago (History, Cartoon Network, Discovery…): no tienen señal
 gratuita oficial, y las que circulan son retransmisiones piratas.
+
+## Mundo (canales de otros países)
+
+`app/src/main/assets/mundo.m3u`: canales gratuitos y oficiales de fuera de Chile.
+
+- **Anime:** MAX Anime (en español), RetroCrush, FilmRise Anime, Yu-Gi-Oh!
+- **Japón y Corea:** NHK World Japan, Arirang TV, Rakuten Viki (doramas con subtítulos en inglés)
+- **Cine y series:** Cine Friki, Cine Western, MyTime Movies, TVE Star, Todo Novelas
+- **Música, por género** (sobre todo las señales gratuitas de Stingray, XITE, Vevo, Now y Totalmusic):
+  K-pop · Rock y metal · Pop y éxitos · Latino y reggaetón · Rap, soul y R&B · Jazz · Country ·
+  Conciertos (Qello, Totalmusic Concerts, Stingray Classica) · Retro 70-80-90 · Electrónica y dance ·
+  Bandas sonoras y karaoke
+
+La línea `#SUSHITV-MUSICA:` al inicio del archivo dice qué grupos son música: esos también aparecen en
+la lista **Música** del menú. Para sumar un género nuevo basta con agregarlo ahí (lo escribe `mundo.py`).
+
+Cada uno es la señal propia del canal o su señal gratuita oficial (FAST), probada desde Chile hasta el
+video y mirada en pantalla. Como el resto de las listas, la app la lee desde GitHub: para sumar o
+arreglar un canal basta con editar el archivo.
+
+Para rehacerla (en una carpeta propia; los pasos de descarga están al inicio de `mundo_candidatos.py`):
+
+```powershell
+python -I sushitv\tools\gratis\mundo_candidatos.py $d; python -I sushitv\tools\canales\deepcheck.py $d
+python -I sushitv\tools\gratis\envivo.py $d nombres.txt
+python -I sushitv\tools\gratis\mundo.py $d app\src\main\assets\mundo.m3u
+```
+
+Los canales se eligen a mano en `PICKS` de `mundo.py`. Fuera a propósito: retransmisiones de canales
+de pago (Cartoon Network, Tooncast, Disney, M6 Music…), canales solo de YouTube (KBS World, The K-POP),
+los exclusivos de teles Samsung o LG (Anime Onegai, It's Anime), Trace (sus enlaces solo funcionan
+haciéndose pasar por la web de Trace) y Kpop Mix (solo mostraba "En breve comenzamos"). No hay canal
+de TV gratuito oficial de J-pop ni de música de videojuegos (solo radios sin imagen). Si un canal de
+`PICKS` no responde al armar la lista, queda fuera y `mundo.py` lo avisa.
+
+## Bienvenida
+
+Al abrir la app (una vez por arranque) se ve una animación de 10 s sobre la app, toda dibujada con código
+en `features/setup/SushiWelcome.kt`, sin imágenes: una tele retro se enciende, Sushi sube, se agarra del
+borde con las patitas, abre sus ojos verdes, mueve la oreja, ladea la cabeza, sale un corazón, asoma la
+cola, cae "SushiTV" letra por letra y Sushi hace el parpadeo lento. Cualquier botón del control (menos el
+volumen) la salta; si algo fallara al dibujarla, se salta sola, y nunca retiene el control más de 12 s.
+
+El sonido es un solo archivo de 10 s, `res/raw/sushitv_bienvenida.wav`: música hecha con código (cajita
+musical, efectos de la tele y las patitas) más 6 ruiditos reales de Sushi. Se arma en el laboratorio de
+`sushitv/tools/bienvenida/`:
+
+```powershell
+python -I sushitv\tools\bienvenida\servidor.py sushitv\tools\bienvenida 8765
+```
+
+Luego abre `http://localhost:8765/mix.html`: "Ver con sonido" muestra la animación con el audio, la tabla
+deja escuchar cada ruidito y elegir cuáles usar (`SEGS` en `mix.html`: archivo, inicio, fin y segundo
+en que suena). Para guardar la mezcla, en la consola del navegador: `await exportWav(22050)`; queda en
+`sushitv/tools/bienvenida/out/bienvenida.wav`, que se copia a `app/src/main/res/raw/sushitv_bienvenida.wav`.
+
+Las grabaciones originales van en `sushitv/tools/bienvenida/audios/` (`a.ogg` … `d.ogg`, notas de voz de
+WhatsApp) y quedan fuera de git; al APK solo llega la mezcla final. `anim.js` es la misma animación que
+`SushiWelcome.kt`, para verla en el navegador: si cambias una, cambia la otra.
 
 ## Actualizaciones por Wi-Fi
 

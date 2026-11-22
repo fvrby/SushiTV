@@ -26,23 +26,26 @@ import tv.own.owntv.core.sync.SyncContentTypes
 import tv.own.owntv.core.sync.work.CatalogSyncScheduler
 
 /**
- * SushiTV: the playlists built on the TV — "Pluto TV" (every free, legal Pluto channel) and the themed
- * "Música", "Películas" and "Series" lists that mix Chilean and Pluto channels. Each one is its own rail
- * entry (SushiRail).
+ * SushiTV: the playlists built on the TV, each its own rail entry (SushiRail) —
+ *  - "Pluto TV": every free, legal Pluto channel;
+ *  - "Música": the music of all three sources (Chilean music and video radios, Pluto's Música and the
+ *    music genres of Mundo);
+ *  - "Mundo": free channels from other countries (assets/mundo.m3u: anime, Japan and Korea, movies and
+ *    series, and music by genre).
  *
  * Pluto only serves programming through a session that expires after 24 h (boot.pluto.tv); fixed URLs
  * get a "Pluto TV is no longer available on this device" slate. So the lists are written here from the
- * two templates (assets/canales-chile.m3u, assets/peliculas-series-gratis.m3u — `pluto-<id>` ids, no
- * URLs), Pluto channels getting this session's URL, and rebuilt every [MAX_AGE_MS]. The session (it
+ * templates (canales-chile.m3u, peliculas-series-gratis.m3u — `pluto-<id>` ids, no URLs — and
+ * mundo.m3u), Pluto channels getting this session's URL, and rebuilt every [MAX_AGE_MS]. The session (it
  * carries the TV's approximate location) never leaves the TV except to Pluto itself. One session plays
- * one channel at a time.
+ * one channel at a time. If Pluto can't be reached, Mundo is still built.
  */
 object SushiPluto {
     private const val PREFS = "sushitv"
     private const val KEY_CLIENT = "pluto_client_id"
     private const val KEY_BUILT_AT = "pluto_built_at"
     private const val KEY_LISTS = "lists_version"
-    private const val LISTS_VERSION = 2 // bump when THEMES change, to rebuild at once
+    private const val LISTS_VERSION = 3 // bump when THEMES change, to rebuild at once (3: Mundo, no Películas/Series)
     private const val MAX_AGE_MS = 12L * 60 * 60 * 1000
     private const val BOOT_URL = "https://boot.pluto.tv/v4/start"
     private const val ID_PREFIX = "pluto-"
@@ -51,23 +54,37 @@ object SushiPluto {
 
     const val PLUTO_FILE = "pluto-en-vivo.m3u"
     const val MUSIC_FILE = "musica.m3u"
-    const val MOVIES_FILE = "peliculas.m3u"
-    const val SERIES_FILE = "series.m3u"
+    const val MUNDO_FILE = "mundo-en-vivo.m3u"
 
-    /** A themed list: which Chilean groups / channel names and which Pluto groups go in it. */
+    /** Lists of earlier versions, removed from the TV (their channels are all still in Pluto TV). */
+    private val RETIRED = listOf("peliculas.m3u", "series.m3u")
+
+    /** Which Mundo channels a list takes: none, all, or those of its music genres. */
+    private enum class FromMundo { NONE, ALL, MUSIC }
+
+    /** mundo.m3u names its music genres (its groups) on this line: `#SUSHITV-MUSICA:Rock y metal|Jazz|…`. */
+    private const val MUNDO_MUSIC_TAG = "#SUSHITV-MUSICA:"
+
+    /** A list and what it takes from each template. For Pluto, null means every channel and an empty set none. */
     private class Theme(
         val file: String,
         val nameRes: Int,
         val chileGroups: Set<String> = emptySet(),
         val chileNames: Set<String> = emptySet(),
-        val plutoGroups: Set<String>? = null, // null = every Pluto channel
-    )
+        val plutoGroups: Set<String>? = emptySet(),
+        val mundo: FromMundo = FromMundo.NONE,
+    ) {
+        val needsPluto: Boolean get() = plutoGroups == null || plutoGroups.isNotEmpty()
+    }
 
     private val THEMES = listOf(
-        Theme(PLUTO_FILE, R.string.sushitv_rail_pluto),
-        Theme(MUSIC_FILE, R.string.sushitv_rail_music, chileGroups = setOf("Música", "Radios con video"), chileNames = setOf("13 Festival"), plutoGroups = setOf("Música")),
-        Theme(MOVIES_FILE, R.string.sushitv_rail_movies, plutoGroups = setOf("Películas")),
-        Theme(SERIES_FILE, R.string.sushitv_rail_series, chileNames = setOf("13 Teleseries"), plutoGroups = setOf("Series", "Clásicos y retro", "Novelas", "Comedia")),
+        Theme(PLUTO_FILE, R.string.sushitv_rail_pluto, plutoGroups = null),
+        Theme(
+            MUSIC_FILE, R.string.sushitv_rail_music,
+            chileGroups = setOf("Música", "Radios con video"), chileNames = setOf("13 Festival"),
+            plutoGroups = setOf("Música"), mundo = FromMundo.MUSIC,
+        ),
+        Theme(MUNDO_FILE, R.string.sushitv_rail_world, mundo = FromMundo.ALL),
     )
 
     private val mutex = Mutex()
@@ -81,7 +98,7 @@ object SushiPluto {
         val koin = GlobalContext.get()
         val settings = koin.get<SettingsRepository>()
         val profileId = koin.get<ProfileDao>().resolveExistingProfileId(settings.activeProfileId.first()) ?: return@withLock
-        val sources = koin.get<SourceRepository>().observeSources(profileId).first()
+        val sources = retire(context, koin.get<SourceRepository>().observeSources(profileId).first(), settings)
         if (sources.isEmpty()) return@withLock // setup not finished: try again later
 
         val files = THEMES.associateWith { File(context.filesDir, it.file) }
@@ -93,20 +110,38 @@ object SushiPluto {
         val missing = THEMES.filter { t -> !(files.getValue(t).exists() && sources.any { it.url == files.getValue(t).absolutePath }) }
         if (!due && missing.isEmpty()) return@withLock
 
-        val clientId = prefs.getString(KEY_CLIENT, null) ?: UUID.randomUUID().toString().also {
-            prefs.edit().putString(KEY_CLIENT, it).apply()
-        }
-        val session = boot(clientId)
         val chile = parse(template(context, SushiChileSource.CHILE))
-        val pluto = parse(template(context, SushiChileSource.FREE_TV)).map { it.withUrl(session.urlFor(it.plutoId ?: "")) }
-        for (t in THEMES) {
+        val mundoText = template(context, SushiChileSource.MUNDO)
+        val mundo = parse(mundoText)
+        val mundoMusic = mundoText.lineSequence().firstOrNull { it.startsWith(MUNDO_MUSIC_TAG) }
+            ?.removePrefix(MUNDO_MUSIC_TAG)?.split('|')?.map { it.trim() }?.toSet().orEmpty()
+        val pluto = runCatching {
+            val clientId = prefs.getString(KEY_CLIENT, null) ?: UUID.randomUUID().toString().also {
+                prefs.edit().putString(KEY_CLIENT, it).apply()
+            }
+            val session = boot(clientId)
+            parse(template(context, SushiChileSource.FREE_TV)).map { it.withUrl(session.urlFor(it.plutoId ?: "")) }
+        }.onFailure { android.util.Log.w("SushiPluto", "Pluto session failed; building the other lists", it) }
+            .getOrNull()
+
+        // Without a Pluto session, Pluto's lists are left as they are and the rest only filled in if missing.
+        val rebuild = due && pluto != null
+        val built = THEMES.filter { !it.needsPluto || pluto != null }
+        for (t in built) {
             val entries = chile.filter { it.group in t.chileGroups || it.name in t.chileNames } +
-                pluto.filter { t.plutoGroups == null || it.group in t.plutoGroups }
+                pluto.orEmpty().filter { t.plutoGroups == null || it.group in t.plutoGroups } +
+                mundo.filter {
+                    when (t.mundo) {
+                        FromMundo.NONE -> false
+                        FromMundo.ALL -> true
+                        FromMundo.MUSIC -> it.group in mundoMusic
+                    }
+                }
             write(files.getValue(t), entries)
         }
 
-        for (t in THEMES) {
-            if (!due && t !in missing) continue
+        for (t in built) {
+            if (!rebuild && t !in missing) continue
             val path = files.getValue(t).absolutePath
             val name = context.getString(t.nameRes)
             val existing = sources.firstOrNull { it.url == path }
@@ -125,7 +160,28 @@ object SushiPluto {
                 resync(existing)
             }
         }
-        if (due) prefs.edit().putLong(KEY_BUILT_AT, System.currentTimeMillis()).putInt(KEY_LISTS, LISTS_VERSION).apply()
+        // Only a run with a Pluto session counts as a rebuild; without one, try again next hour.
+        if (rebuild) {
+            prefs.edit().putLong(KEY_BUILT_AT, System.currentTimeMillis()).putInt(KEY_LISTS, LISTS_VERSION).apply()
+        }
+    }
+
+    /**
+     * Deletes the lists of earlier versions (Películas, Series) with their channels, the way Settings
+     * deletes a playlist. If one was the active playlist, TV chilena becomes the active one.
+     */
+    private suspend fun retire(context: Context, sources: List<SourceEntity>, settings: SettingsRepository): List<SourceEntity> {
+        val (old, keep) = sources.partition { s -> RETIRED.any { s.url.endsWith(it) } }
+        if (old.isEmpty()) return sources
+        val koin = GlobalContext.get()
+        val active = settings.defaultSourceId.first()
+        for (s in old) {
+            koin.get<CatalogSyncScheduler>().cancelSync(s.id)
+            koin.get<SourceRepository>().deleteSource(s)
+            if (s.id == active) settings.setDefaultSource(keep.firstOrNull { it.url.endsWith(SushiChileSource.CHILE) }?.id ?: -1L)
+        }
+        RETIRED.forEach { File(context.filesDir, it).delete() }
+        return keep
     }
 
     private suspend fun resync(source: SourceEntity) {

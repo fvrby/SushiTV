@@ -17,6 +17,7 @@ import tv.own.owntv.core.settings.PlaylistRefresh
 object SushiChileSource {
     const val CHILE = "canales-chile.m3u"
     const val FREE_TV = "peliculas-series-gratis.m3u"
+    const val MUNDO = "mundo.m3u"
 
     val refresh: PlaylistRefresh
         get() = if (remote) PlaylistRefresh(PlaylistAutoRefresh.HOURS_12) else PlaylistRefresh.OFF

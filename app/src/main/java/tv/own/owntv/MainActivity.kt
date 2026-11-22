@@ -154,6 +154,10 @@ open class MainActivity : ComponentActivity() {
         handOff.onActivityResumed()
     }
 
+    /** SushiTV: while the welcome plays, a key press only skips it. */
+    override fun dispatchKeyEvent(event: android.view.KeyEvent): Boolean =
+        tv.own.owntv.features.setup.SushiWelcomeSkip.consume(event) || super.dispatchKeyEvent(event)
+
     /** Every screen this activity opens (a trailer in YouTube, a system settings page) is a hand-off. */
     override fun startActivity(intent: Intent, options: Bundle?) {
         tv.own.owntv.features.pip.startAsHandOff(intent) { super.startActivity(it, options) }
@@ -359,7 +363,7 @@ open class MainActivity : ComponentActivity() {
                 if ((activeProfileId ?: -1L) >= 0L) viewModel.checkAutoRefresh(includeStartup = true)
             }
 
-            // SushiTV: the app inside a Box so the pixel-art welcome can sit on top of it.
+            // SushiTV: the app inside a Box so the welcome animation can sit on top of it.
             Box(Modifier.fillMaxSize()) {
             OwnTVTheme(
                 themeMode = themeMode,

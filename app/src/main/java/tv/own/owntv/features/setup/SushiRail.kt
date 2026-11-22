@@ -8,7 +8,7 @@ import tv.own.owntv.features.shell.components.RailShortcut
 import tv.own.owntv.ui.components.OwnTVIcon
 
 /**
- * SushiTV: the rail's entries — TV chilena, Pluto TV, Música, Películas, Series. Each opens Live TV
+ * SushiTV: the rail's entries — TV chilena, Pluto TV, Música, Mundo. Each opens Live TV
  * with its own playlist chosen in OwnTV's playlist switcher, so every list keeps its own section column.
  */
 object SushiRail {
@@ -18,8 +18,7 @@ object SushiRail {
         Spec(R.string.sushitv_rail_tv_chilena, OwnTVIcon.LIVE_TV, R.drawable.sushitv_rail_chile) { it.endsWith(SushiChileSource.CHILE) },
         Spec(R.string.sushitv_rail_pluto, OwnTVIcon.PLAY_CIRCLE, R.drawable.sushitv_rail_pluto) { SushiPluto.isPluto(it) },
         Spec(R.string.sushitv_rail_music, OwnTVIcon.HEADPHONES, R.drawable.sushitv_rail_music) { it.endsWith(SushiPluto.MUSIC_FILE) },
-        Spec(R.string.sushitv_rail_movies, OwnTVIcon.MOVIES, R.drawable.sushitv_rail_movies) { it.endsWith(SushiPluto.MOVIES_FILE) },
-        Spec(R.string.sushitv_rail_series, OwnTVIcon.SERIES, R.drawable.sushitv_rail_series) { it.endsWith(SushiPluto.SERIES_FILE) },
+        Spec(R.string.sushitv_rail_world, OwnTVIcon.LANGUAGE, R.drawable.sushitv_rail_world) { it.endsWith(SushiPluto.MUNDO_FILE) },
     )
 
     @Composable
