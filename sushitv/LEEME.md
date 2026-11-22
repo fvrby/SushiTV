@@ -100,16 +100,20 @@ actual entra como fuente prioritaria, así que sus nombres y logos se conservan.
 
 ### Guía de programación (EPG)
 
-La cabecera de la lista (`#EXTM3U url-tvg=...`) apunta a la guía XMLTV de
-[iptv-epg.org](https://iptv-epg.org/files/epg-cl.xml), que se actualiza a diario con unos 3 días de
-programación. Al sincronizar la lista, la app la guarda como guía. `EPG_IDS` en `curate.py` fija el
-`tvg-id` de los 11 canales que cubre: Mega, Chilevisión, Canal 13, La Red, 24 Horas, 13 Cultura,
-UCV, TV Senado, Canal 9 Bío-Bío, TVU y Radio Agricultura.
+La cabecera de la lista (`#EXTM3U url-tvg=...`) apunta a las guías XMLTV de open-epg.com, que traen
+programación real (~1,5 días hacia adelante) y se renuevan a diario:
 
-Otras guías con canales que esa no tiene (se pueden sumar en **Ajustes › Fuentes EPG**):
-`https://www.open-epg.com/files/chile2.xml` (NTV, TV+, T13 en vivo, CHV Noticias) y
-`https://epgshare01.online/epgshare01/epg_ripper_CL1.xml.gz` (TV Chile). Los canales regionales y las
-radios no tienen guía en ninguna fuente pública.
+- `https://www.open-epg.com/files/chile2.xml`: Mega, Chilevisión, Canal 13, TV+, 24 Horas,
+  T13 en vivo, CHV Noticias, NTV, 13 Cultura y TV Senado.
+- `https://www.open-epg.com/files/chile1.xml`: La Red, UCV, TVU y Radio Agricultura.
+
+`EPG_IDS` en `curate.py` fija el `tvg-id` de esos 14 canales exactamente como los escribe open-epg.
+**No usar iptv-epg.org**: para Chile solo entrega programas de relleno que dicen "No Data".
+
+OwnTV no descarga la guía solo: en la tele hay que agregarla una vez en **Configuración › Fuentes de
+EPG › Agregar fuente de EPG** y dejar **Actualización automática** en "al iniciar". TV Chile tiene guía
+en `https://epgshare01.online/epgshare01/epg_ripper_CL1.xml.gz` (id `TV.Chile.cl`). Los canales
+regionales y las radios no tienen guía en ninguna fuente pública.
 
 - **Sin repo configurado:** la lista viaja dentro del APK. Para cambiarla hay que recompilar.
 - **Con `sushitv.githubRepo` configurado:** la app la lee desde GitHub y la refresca cada vez que

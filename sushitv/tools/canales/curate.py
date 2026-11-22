@@ -81,13 +81,17 @@ RULES = [
     (r'^la nuestra', 'Radio La Nuestra', 'Radios con video'),
     (r'^(radio )?biobio tv$|^radio bio ?bio', 'Radio Bío-Bío', 'Radios con video'),
 ]
-# Program guide (XMLTV). One URL per playlist: OwnTV stores it as the playlist's guide on sync.
-# iptv-epg.org refreshes daily and uses iptv-org style ids; EPG_IDS pins our channels to its ids.
-GUIDE_URL = 'https://iptv-epg.org/files/epg-cl.xml'
+# Program guide (XMLTV). OwnTV stores url-tvg as the playlist's guide on sync and splits a
+# comma-separated value into one guide per feed. open-epg.com publishes real schedules, refreshed
+# daily (~1.5 days ahead). Do NOT use iptv-epg.org: its Chilean channels are "No Data" placeholders.
+# chile2 has the main channels; chile1 adds La Red, UCV, TVU and Radio Agricultura.
+GUIDE_URL = 'https://www.open-epg.com/files/chile2.xml,https://www.open-epg.com/files/chile1.xml'
+# Our channel -> the guide's channel id, exactly as open-epg writes it.
 EPG_IDS = {
-    'Mega': 'Mega.cl', 'Chilevisión': 'Chilevision.cl', 'Canal 13': 'Canal13.cl', 'La Red': 'LaRed.cl',
-    '24 Horas': '24Horas.cl', '13 Cultura': '13C.cl', 'UCV Televisión': 'UCVTV.cl', 'TV Senado': 'TVSenado.cl',
-    'Canal 9 Bío-Bío': 'Canal9BioBio.cl', 'TVU': 'TVU.cl', 'Radio Agricultura': 'RadioAgricultura.cl',
+    'Mega': 'Mega.cl', 'Chilevisión': 'CHV.cl', 'Canal 13': 'Canal 13.cl', 'TV+': 'TV+.cl',
+    '24 Horas': '24 Horas HD.cl', 'T13 en vivo': 'T13 En Vivo.cl', 'CHV Noticias': 'CHV Noticias.cl',
+    'NTV': 'NTV.cl', '13 Cultura': '13 C HD.cl', 'TV Senado': 'TV SENADO.cl',
+    'La Red': 'La Red.cl', 'UCV Televisión': 'UCV TV.cl', 'TVU': 'TVU.cl', 'Radio Agricultura': 'Radio Agricultura.cl',
     # Community lists give CHV Deportes Chilevisión's id, which would show Chilevisión's schedule on it.
     'CHV Deportes': 'CHVDeportes.cl',
 }
