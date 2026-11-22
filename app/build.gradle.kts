@@ -44,7 +44,8 @@ android {
     }
 
     defaultConfig {
-        applicationId = "tv.own.owntv"
+        // SushiTV fork: own id so it installs next to upstream OwnTV and never takes its updates.
+        applicationId = "cl.sushitv"
         minSdk = 26
         targetSdk = 36
         // CI injects these from the git tag (see .github/workflows/android.yml) so releases never
@@ -78,6 +79,14 @@ android {
                         ?: localSigningProps.getProperty("owntv.devTools")
                     ) == "true"
                 ).toString(),
+        )
+
+        // SushiTV: "owner/name" of the GitHub repo whose Releases the in-app updater follows
+        // (gradle.properties → sushitv.githubRepo). Blank = no update checks at all.
+        buildConfigField(
+            "String",
+            "SUSHITV_REPO",
+            "\"${providers.gradleProperty("sushitv.githubRepo").orNull.orEmpty().trim()}\"",
         )
 
         // Shared secret the default metadata Worker's edge rule requires (`x-owntv-key`). NEVER in the

@@ -113,7 +113,8 @@ class OwnTVApp : Application(), SingletonImageLoader.Factory, androidx.work.Conf
         // this value, so the line changes nothing today — it is here so the television names its own
         // repository instead of relying on core to guess it, the same as the phone app does. A
         // default that happens to be right for one app is a trap for every other one.
-        tv.own.owntv.core.CoreBuildInfo.releaseRepo = "ahXN00/OwnTV"
+        // SushiTV: our own Releases, never upstream OwnTV's (see SUSHITV_REPO in app/build.gradle.kts).
+        tv.own.owntv.core.CoreBuildInfo.releaseRepo = BuildConfig.SUSHITV_REPO
         // Fixed for this process before any player exists: the setting applies only after a restart.
         tv.own.owntv.core.player.FfmpegAudioSetting.load(this)
         // First thing after the context exists: a crash from here on leaves a trace on disk that the

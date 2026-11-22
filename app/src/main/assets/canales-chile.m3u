@@ -1,0 +1,41 @@
+#EXTM3U
+#EXTINF:-1 tvg-id="Mega.cl" tvg-chno="2" tvg-logo="https://i.imgur.com/CYdWSDb.png" group-title="Nacionales",Mega
+https://unlimited2-cl-isp.dps.live/mega/mega.smil/playlist.m3u8
+#EXTINF:-1 tvg-id="ChileVision.cl" tvg-chno="3" tvg-logo="https://i.imgur.com/2Pu8yXf.png" group-title="Nacionales",Chilevisión
+https://redirector.rudo.video/hls-video/10b92cafdf3646cbc1e727f3dc76863621a327fd/chv/chv.smil/playlist.m3u8
+#EXTINF:-1 tvg-id="Canal13.cl" tvg-chno="4" tvg-logo="https://i.imgur.com/JIo1HBs.png" group-title="Nacionales",Canal 13
+https://redirector.dps.live/hls/13cl/playlist.m3u8
+#EXTINF:-1 tvg-id="TVPlus.cl" tvg-chno="5" tvg-logo="https://i.imgur.com/NtuZIEJ.png" group-title="Nacionales",TV+
+https://jireh-8-hls-video-us-isp.dps.live/hls-video/ey6283je82983je9823je8jowowiekldk9838274/tvmas/tvmas.smil/playlist.m3u8
+#EXTINF:-1 tvg-id="24Horas.cl" tvg-chno="6" tvg-logo="https://i.imgur.com/0rF6Kub.png" group-title="Noticias",24 Horas
+https://mdstrm.com/live-stream-playlist/689ba606ecfe7915e1f8f741.m3u8
+#EXTINF:-1 tvg-id="T13.cl" tvg-chno="7" tvg-logo="https://i.imgur.com/3CEijac.png" group-title="Noticias",T13 en vivo
+https://redirector.rudo.video/hls-video/10b92cafdf3646cbc1e727f3dc76863621a327fd/t13/t13.smil/playlist.m3u8
+#EXTINF:-1 tvg-id="CHVNoticias.cl" tvg-chno="8" tvg-logo="https://i.imgur.com/Qh6d0A9.png" group-title="Noticias",CHV Noticias
+https://mdstrm.com/live-stream-playlist/6491ced935a5833c47dd7f41.m3u8
+#EXTINF:-1 tvg-id="" tvg-chno="9" tvg-logo="https://i.imgur.com/WoN1dai.png" group-title="Noticias",24 Play
+https://mdstrm.com/live-stream-playlist/57d1a22064f5d85712b20dab.m3u8
+#EXTINF:-1 tvg-id="ChileVision.cl" tvg-chno="10" tvg-logo="https://i.imgur.com/eWCXl6a.jpeg" group-title="Deportes",CHV Deportes
+https://redirector.rudo.video/hls-video/10b92cafdf3646cbc1e727f3dc76863621a327fd/chvdeportes/chvdeportes.smil/playlist.m3u8
+#EXTINF:-1 tvg-id="NTV.cl" tvg-chno="11" tvg-logo="https://i.imgur.com/pt2Kj1A.png" group-title="Cultura e infantil",NTV
+https://mdstrm.com/live-stream-playlist/5aaabe9e2c56420918184c6d.m3u8
+#EXTINF:-1 tvg-id="TVN3.cl" tvg-chno="12" tvg-logo="https://i.imgur.com/84lWqRi.png" group-title="Cultura e infantil",TVN 3
+https://mdstrm.com/live-stream-playlist/5653641561b4eba30a7e4929.m3u8
+#EXTINF:-1 tvg-id="TVChile.cl" tvg-chno="13" tvg-logo="https://i.imgur.com/yCL888l.png" group-title="Cultura e infantil",TV Chile
+https://mdstrm.com/live-stream-playlist/533adcc949386ce765657d7c.m3u8
+#EXTINF:-1 tvg-id="13C.cl" tvg-chno="14" tvg-logo="https://i.imgur.com/49QkKWv.png" group-title="Cultura e infantil",13 Cultura
+https://origin.dpsgo.com/ssai/event/GI-9cp_bT8KcerLpZwkuhw/master.m3u8
+#EXTINF:-1 tvg-id="13Kids.cl" tvg-chno="15" tvg-logo="https://i.imgur.com/m6y9AMe.png" group-title="Cultura e infantil",13 Kids
+https://origin.dpsgo.com/ssai/event/LhHrVtyeQkKZ-Ye_xEU75g/master.m3u8
+#EXTINF:-1 tvg-id="13Realities.cl" tvg-chno="16" tvg-logo="https://i.imgur.com/p1Qpljw.png" group-title="Entretención",13 Realities
+https://origin.dpsgo.com/ssai/event/g7_JOM0ORki9SR5RKHe-Kw/master.m3u8
+#EXTINF:-1 tvg-id="13T.cl" tvg-chno="17" tvg-logo="https://i.imgur.com/aJMBnse.png" group-title="Entretención",13 Teleseries
+https://origin.dpsgo.com/ssai/event/f4TrySe8SoiGF8Lu3EIq1g/master.m3u8
+#EXTINF:-1 tvg-id="UChileTV.cl" tvg-chno="18" tvg-logo="https://i.imgur.com/mF2W8Uh.png" group-title="Regionales y universitarios",UChile TV
+https://unlimited1-us.dps.live/uchiletv/uchiletv.smil/playlist.m3u8
+#EXTINF:-1 tvg-id="UCVTV.cl" tvg-chno="19" tvg-logo="https://i.imgur.com/2VL4Pts.png" group-title="Regionales y universitarios",UCV Televisión
+https://unlimited1-cl-isp.dps.live/ucvtv2/ucvtv2.smil/playlist.m3u8
+#EXTINF:-1 tvg-id="biobiochile.cl" tvg-chno="20" tvg-logo="https://i.imgur.com/wrRufts.png" group-title="Regionales y universitarios",Bio Bio TV
+https://redirector.rudo.video/hls-video/339f69c6122f6d8f4574732c235f09b7683e31a5/bbtv/bbtv.smil/playlist.m3u8
+#EXTINF:-1 tvg-id="ElPinguinoTV.cl" tvg-chno="21" tvg-logo="https://i.imgur.com/ohXs2NV.png" group-title="Regionales y universitarios",El Pingüino TV
+https://redirector.rudo.video/hls-video/339f69c6122f6d8f4574732c235f09b7683e31a5/pinguinotv/pinguinotv.smil/playlist.m3u8

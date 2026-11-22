@@ -1956,7 +1956,10 @@ private fun CatchupSourceValueHost(settingsVm: SettingsViewModel, src: tv.own.ow
 }
 
 /** The repository line More › About shows. */
-internal const val GITHUB_REPO = "github.com/ahXN00/OwnTV"
+/** SushiTV: the fork's repo once configured (sushitv.githubRepo), else upstream OwnTV's. */
+internal val GITHUB_REPO: String
+    get() = "github.com/" + tv.own.owntv.BuildConfig.SUSHITV_REPO.ifBlank { UPSTREAM_REPO }
+private const val UPSTREAM_REPO = "ahXN00/OwnTV"
 internal const val TELEGRAM_LINK = "t.me/owntvplayer"
 
 /**

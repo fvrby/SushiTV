@@ -57,3 +57,6 @@ replay_pid*.log
 
 # Local-only archive (old detailed changelogs etc.), never committed
 /archive/
+
+# SushiTV: original photo stays local (only the cropped app images are committed)
+/sushi-icon.png

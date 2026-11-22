@@ -84,6 +84,8 @@ fun Onboarding(firstRun: Boolean, onDone: (Long?) -> Unit, onCancel: () -> Unit,
     val defaultIptvName = stringResource(R.string.setup_default_iptv)
     val defaultPlaylistName = stringResource(R.string.setup_name_default_playlist)
     val defaultPortalName = stringResource(R.string.setup_default_portal)
+    val chileName = stringResource(R.string.sushitv_chile_title)
+    val context = androidx.compose.ui.platform.LocalContext.current
     var step by rememberSaveable(firstRun) { mutableStateOf(if (firstRun) Step.WELCOME else Step.CREATE_PROFILE) }
     val importState by vm.state.collectAsStateWithLifecycle()
     val progress by vm.progress.collectAsStateWithLifecycle()
@@ -155,6 +157,13 @@ fun Onboarding(firstRun: Boolean, onDone: (Long?) -> Unit, onCancel: () -> Unit,
             )
             Step.ADD_CONTENT -> AddContentStep(
                 hasExisting = existing.isNotEmpty(),
+                // SushiTV: one press imports the built-in Chilean free-to-air playlist.
+                onChile = {
+                    importName = chileName
+                    vm.startM3u(chileName, SushiChileSource.location(context), autoRefresh = SushiChileSource.refresh)
+                    importOrigin = Step.ADD_CONTENT
+                    step = Step.IMPORTING
+                },
                 onPhone = { step = Step.ADD_SOURCE_REMOTE },
                 onType = { step = Step.ADD_SOURCE },
                 onExisting = { step = Step.EXISTING },
@@ -535,7 +544,7 @@ private fun AvatarStrip(ids: List<Int>, chosen: Int) {
 
 /** Add a playlist: From your phone, Type it here, Import (and Existing when another profile has some). */
 @Composable
-private fun AddContentStep(hasExisting: Boolean, onPhone: () -> Unit, onType: () -> Unit, onExisting: () -> Unit, onImport: () -> Unit, onSkip: () -> Unit) {
+private fun AddContentStep(hasExisting: Boolean, onChile: () -> Unit, onPhone: () -> Unit, onType: () -> Unit, onExisting: () -> Unit, onImport: () -> Unit, onSkip: () -> Unit) {
     val first = rememberFirstFocus()
     WizardFrame(
         step = WizardStep.PLAYLIST,
@@ -548,6 +557,7 @@ private fun AddContentStep(hasExisting: Boolean, onPhone: () -> Unit, onType: ()
     ) {
         WizardCards(
             listOfNotNull(
+                WizardCard(OwnTVIcon.LIVE_TV, stringResource(R.string.sushitv_chile_title), stringResource(R.string.sushitv_chile_line), onChile),
                 WizardCard(OwnTVIcon.PHONE, stringResource(R.string.setup_from_phone), stringResource(R.string.setup_phone_card_line), onPhone),
                 WizardCard(OwnTVIcon.PENCIL, stringResource(R.string.settings_add_type_here), stringResource(R.string.settings_line_add_type_here), onType),
                 if (hasExisting) WizardCard(OwnTVIcon.PLAYLIST, stringResource(R.string.setup_existing), stringResource(R.string.setup_use_other_profile_playlists), onExisting) else null,

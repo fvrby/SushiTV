@@ -2101,7 +2101,9 @@ fun OwnTVShell(
         val updateCheckOnStart by settingsRepo.updateCheckOnStart.collectAsStateWithLifecycle(initialValue = false)
         LaunchedEffect(updateCheckOnStart) {
             // Once per launch: a rebuilt shell must not bring the "latest version" card back.
-            if (updateCheckOnStart && !showStartupToast && !shellVm.startupUpdateCheckDone) {
+            // SushiTV: no repo configured → nothing to check against.
+            if (tv.own.owntv.BuildConfig.SUSHITV_REPO.isNotBlank() &&
+                updateCheckOnStart && !showStartupToast && !shellVm.startupUpdateCheckDone) {
                 kotlinx.coroutines.delay(5_000)
                 shellVm.startupUpdateCheckDone = true
                 showStartupToast = true
