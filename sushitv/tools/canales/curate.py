@@ -46,8 +46,10 @@ RULES = [
     (r'^13 ?c(ultura)?$', '13 Cultura', 'Cultura e infantil'),
     (r'^13 kids', '13 Kids', 'Cultura e infantil'),
     # EnerGeek (Santiago): links as EnerGeek publishes them in the TDTChannels list (tdtchannels.com/lists/tv.json).
-    (r'^energeek retro', 'EnerGeek Retro', 'Geek y anime'),
+    # EnerGeek's own catalogue (neotv.energeek.cl/assets/iptv.json) calls the egretro feed just "EnerGeek".
+    (r'^energeek( retro)?$', 'EnerGeek', 'Geek y anime'),
     (r'^energeek fan', 'EnerGeek Fan', 'Geek y anime'),
+    (r'^energeek radio', 'EnerGeek Radio', 'Geek y anime'),
     (r'^13 realities', '13 Realities', 'Entretención'),
     (r'^13 ?t(eleseries)?$', '13 Teleseries', 'Entretención'),
     (r'^13 humor', '13 Humor', 'Entretención'),
@@ -83,7 +85,6 @@ RULES = [
     (r'^pauta$', 'Radio Pauta', 'Radios con video'),
     (r'^la nuestra', 'Radio La Nuestra', 'Radios con video'),
     (r'^(radio )?biobio tv$|^radio bio ?bio', 'Radio Bío-Bío', 'Radios con video'),
-    (r'^energeek radio', 'EnerGeek Radio', 'Radios con video'),
 ]
 # Program guide (XMLTV). OwnTV stores url-tvg as the playlist's guide on sync and splits a
 # comma-separated value into one guide per feed. open-epg.com publishes real schedules, refreshed

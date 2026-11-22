@@ -27,6 +27,7 @@ Exigido por la GPL-3.0 (sección 5a): estos son los archivos que SushiTV modific
 | 2026-11-22 | Menú: TV chilena, Pluto TV, Música y **Mundo** (canales gratis de otros países: anime, Japón y Corea, cine y series, y música por género que también sale en Música); fuera Películas y Series (sus canales siguen en las secciones de Pluto TV); ícono oficial de Pluto TV; EnerGeek (Fan, Retro y Radio) en TV chilena | `features/setup/SushiPluto.kt`, `SushiRail.kt`, `SushiChileSource.kt`, `assets/mundo.m3u`, `assets/canales-chile.m3u`, `res/values/sushitv_brand.xml`, `res/drawable-nodpi/sushitv_rail_*.png`, `sushitv/tools/make-rail-icons.ps1`, `sushitv/tools/marcas/pluto-tv.png`, `sushitv/tools/gratis/mundo*.py`, `envivo.py`, `sushitv/tools/canales/curate.py` |
 | 2026-11-22 | Íconos propios en el menú (bandera, Plutón, nota, claqueta, tele) y título de TV en vivo = nombre de la lista; arranque más liviano (guías cada 24 h, TV chilena cada 12 h, trabajo de SushiTV 60 s después de abrir, reintentos solo de lo que falta) | `sushitv/tools/make-rail-icons.ps1`, `res/drawable-nodpi/sushitv_rail_*.png`, `StageRail.kt`, `SushiRail.kt`, `live/LiveViewModel.kt`, `LiveStage.kt`, `LiveScreen.kt`, `SushiGuides.kt`, `SushiDefaults.kt`, `SushiChileSource.kt`, `SushiPluto.kt`, `OwnTVApp.kt` |
 | 2026-11-22 | Menú: TV chilena, Pluto TV, Música, Películas y Series (listas armadas en la tele); fuera Deportes, Guía y Películas/Series a pedido; bienvenida de ~4 s | `features/setup/SushiPluto.kt`, `SushiRail.kt`, `components/StageRail.kt`, `SushiWelcome.kt`, `res/values/sushitv_brand.xml` |
+| 2026-11-22 | Animaciones secretas: mantener OK sobre el logo de Sushi del menú lanza una de 4 al azar (la caja, puntero láser, la siesta, lluvia de sushi), flotando sobre la app y con sonido; la bienvenida espera a que la tele esté fluida (luz de "en espera") y se puede volver a ver en Acerca de; EnerGeek con su nombre oficial | `features/setup/SushiSecrets.kt`, `SushiCatArt.kt`, `SushiWelcome.kt`, `components/StageRail.kt` (RailBrand), `more/MorePages.kt` (AboutPage), `MainActivity.kt`, `res/raw/sushitv_secreto_*.wav`, `sushitv/tools/bienvenida/secretos.*`, `synth.js` |
 | 2026-11-22 | Bienvenida de 10 s dibujada con código (sin imágenes): tele retro que se enciende, Sushi con sus manchas reales, cola, corazón, "SushiTV" letra por letra y parpadeo lento; sonido de 10 s con música hecha en código y ruiditos reales de Sushi; cualquier botón la salta | `features/setup/SushiWelcome.kt`, `MainActivity.kt` (dispatchKeyEvent), `res/raw/sushitv_bienvenida.wav`, `res/values/sushitv_brand.xml`, `sushitv/tools/bienvenida/` |
 | 2026-11-22 | Avatares = fotos de los gatos (sin dibujos predefinidos ni silueta "sin avatar"); se mantiene "Tu propia foto" | `ui/components/OwnTVAvatar.kt`, `AvatarPickerDialog.kt`, `ProfileComponents.kt`, `SetupWizard.kt`, `StageRail.kt`, `res/drawable-nodpi/sushitv_avatar_*.png` (de `sushitv/tools/make-avatars.ps1`; fotos originales en `avatares/`, fuera de git) |
 | 2026-11-22 | Íconos "TV chilena" y "Películas y series" en el menú lateral en lugar de "TV en vivo"; TV en vivo en diseño Separado | `components/StageRail.kt`, `shell/OwnTVShell.kt`, `features/setup/SushiRail.kt`, `features/setup/SushiDefaults.kt` |
@@ -86,7 +87,9 @@ La lista está en `app/src/main/assets/canales-chile.m3u` (formato M3U estándar
 con video, Universitarios, Regionales, Institucionales, Religiosos y Paisajes en vivo). Fuentes:
 [Alplox/json-teles](https://github.com/Alplox/json-teles), [iptv-org](https://github.com/iptv-org/iptv)
 y [Free-TV/IPTV](https://github.com/Free-TV/IPTV); los de EnerGeek (canal geek de Santiago) con los enlaces
-que EnerGeek publica en la lista de [TDTChannels](https://www.tdtchannels.com). Solo señales gratuitas; se descartan las
+que EnerGeek publica en la lista de [TDTChannels](https://www.tdtchannels.com) (con los nombres de su propio
+catálogo, `neotv.energeek.cl/assets/iptv.json`: EnerGeek, EnerGeek Fan y EnerGeek Radio, juntos en "Geek y
+anime"; la radio sale también en Música). Solo señales gratuitas; se descartan las
 retransmisiones desde IPs sueltas y los canales de pago (TCM, Nick Jr.) o extranjeros.
 
 ### Refrescar la lista
@@ -222,8 +225,11 @@ de TV gratuito oficial de J-pop ni de música de videojuegos (solo radios sin im
 
 ## Bienvenida
 
-Al abrir la app (una vez por arranque) se ve una animación de 10 s sobre la app, toda dibujada con código
-en `features/setup/SushiWelcome.kt`, sin imágenes: una tele retro se enciende, Sushi sube, se agarra del
+Al abrir la app (una vez por arranque, y cuando quieras desde **Acerca de › Ver bienvenida de Sushi**) se
+ve una animación de 10 s sobre la app, toda dibujada con código en `features/setup/SushiWelcome.kt` (Sushi
+misma está en `SushiCatArt.kt`, compartida con las animaciones secretas), sin imágenes. Como al encender la
+tele la app tarda un momento en ir fluida, primero se ve la tele apagada con su luz roja de "en espera"
+hasta que los cuadros salen parejos (máximo 3 s); recién ahí parte el espectáculo: una tele retro se enciende, Sushi sube, se agarra del
 borde con las patitas, abre sus ojos verdes, mueve la oreja, ladea la cabeza, sale un corazón, asoma la
 cola, cae "SushiTV" letra por letra y Sushi hace el parpadeo lento. Cualquier botón del control (menos el
 volumen) la salta; si algo fallara al dibujarla, se salta sola, y nunca retiene el control más de 12 s.
@@ -240,6 +246,22 @@ Luego abre `http://localhost:8765/mix.html`: "Ver con sonido" muestra la animaci
 deja escuchar cada ruidito y elegir cuáles usar (`SEGS` en `mix.html`: archivo, inicio, fin y segundo
 en que suena). Para guardar la mezcla, en la consola del navegador: `await exportWav(22050)`; queda en
 `sushitv/tools/bienvenida/out/bienvenida.wav`, que se copia a `app/src/main/res/raw/sushitv_bienvenida.wav`.
+
+### Animaciones secretas
+
+Con el logo de Sushi del menú lateral seleccionado, **OK** la hace dar un saltito y **mantener OK** lanza una
+de 4 escenas al azar (nunca la misma dos veces seguidas), flotando sobre lo que haya en pantalla y sin quitar
+el control (`features/setup/SushiSecrets.kt`):
+
+1. **La caja** (7 s): asoma de una caja de cartón, salta con papelitos y se duerme en ella.
+2. **Puntero láser** (7 s): sigue un puntito rojo, se agacha, salta, falla y se lame la patita.
+3. **La siesta** (8 s): duerme soñando con sushi volador, despierta, se estira y bosteza.
+4. **Lluvia de sushi** (8 s): atrapa nigiris, makis y pescaditos con la boca y los cuenta.
+
+Cada una tiene su sonido (`res/raw/sushitv_secreto_1.wav` … `_4.wav`, 16 kHz): música y efectos hechos con
+código (`synth.js`) más ruiditos de Sushi. Se ven y escuchan en `http://localhost:8765/secretos.html` (el
+mismo laboratorio); `secretos.js` es la misma animación que `SushiSecrets.kt`. Para regenerar los sonidos,
+en la consola del navegador: `await exportAll()`; quedan en `out/` y se copian a `app/src/main/res/raw/`.
 
 Las grabaciones originales van en `sushitv/tools/bienvenida/audios/` (`a.ogg` … `d.ogg`, notas de voz de
 WhatsApp) y quedan fuera de git; al APK solo llega la mezcla final. `anim.js` es la misma animación que

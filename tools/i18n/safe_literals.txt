@@ -682,6 +682,7 @@
 1	protocol	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	13 Festival
 1	protocol	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	9.10.0
 1	protocol	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	=
+1	protocol	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	EnerGeek Radio
 1	log	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	HTTP ${conn.responseCode}
 1	protocol	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	Mozilla/5.0 (Linux; Android 12; TV) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36
 2	protocol	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	Música
@@ -722,6 +723,8 @@
 1	log	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	sushitv_lists
 1	regex	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	tvg-id="$ID_PREFIX([0-9a-f]+)"
 3	protocol	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	web
+1	log	app/src/main/java/tv/own/owntv/features/setup/SushiSecrets.kt	SushiSecrets
+1	log	app/src/main/java/tv/own/owntv/features/setup/SushiSecrets.kt	secret skipped
 1	log	app/src/main/java/tv/own/owntv/features/setup/SushiWelcome.kt	SushiWelcome
 1	log	app/src/main/java/tv/own/owntv/features/setup/SushiWelcome.kt	welcome skipped
 3	technical	app/src/main/java/tv/own/owntv/features/shell/OwnTVShell.kt	\0

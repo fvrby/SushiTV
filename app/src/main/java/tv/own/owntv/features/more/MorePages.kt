@@ -698,6 +698,8 @@ internal fun AboutPage(vm: MoreCountsViewModel, entry: FocusRequester, onOpenLan
             val languages = SupportedLocales.all.count { it.packaged }
             StageTool(pluralStringResource(R.plurals.more_about_languages, languages, languages), onClick = onOpenLanguage, icon = OwnTVIcon.LIST, boxed = true, modifier = Modifier.focusRequester(entry))
             StageTool(stringResource(R.string.settings_check_updates), onClick = { showUpdate = true }, icon = OwnTVIcon.REFRESH, boxed = true, modifier = Modifier.focusRequester(updateFocus))
+            // SushiTV: the welcome animation again, whenever you like.
+            StageTool(stringResource(R.string.sushitv_welcome_replay), onClick = { tv.own.owntv.features.setup.SushiWelcomeReplay.play() }, icon = OwnTVIcon.PLAY, boxed = true)
         }
     }
     if (showUpdate) {

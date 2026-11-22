@@ -51,66 +51,66 @@ https://origin.dpsgo.com/ssai/event/LhHrVtyeQkKZ-Ye_xEU75g/master.m3u8
 https://videostream.chileservidores.com:8081/tome/index.m3u8
 #EXTINF:-1 tvg-id="VersoTV.cl@SD" tvg-chno="26" tvg-logo="https://i.imgur.com/zdv4IF8.png" group-title="Cultura e infantil",Verso TV
 https://verso.coopcom.cl/live/SHf6GLCpn4hDSpWdzaDzgX0ciU82/index.m3u8
-#EXTINF:-1 tvg-id="" tvg-chno="27" tvg-logo="https://pbs.twimg.com/profile_images/2088558300111556608/CrCydAjp_200x200.jpg" group-title="Geek y anime",EnerGeek Retro
+#EXTINF:-1 tvg-id="" tvg-chno="27" tvg-logo="https://neotv.energeek.cl/assets/img/channels/energeek-c1.png" group-title="Geek y anime",EnerGeek
 https://cl-2.backend.energeek.cl/bkp/egretroweb/index.m3u8?token=TDTCh4nnelsES
 #EXTINF:-1 tvg-id="" tvg-chno="28" tvg-logo="https://cdn.energeek.cl/logos/EG-Fan-2025_pfp.png" group-title="Geek y anime",EnerGeek Fan
 https://cl-2.backend.energeek.cl/bkp/egfanweb/index.m3u8?token=TDTCh4nnelsES
-#EXTINF:-1 tvg-id="13Realities.cl" tvg-chno="29" tvg-logo="https://i.imgur.com/p1Qpljw.png" group-title="Entretención",13 Realities
-https://origin.dpsgo.com/ssai/event/g7_JOM0ORki9SR5RKHe-Kw/master.m3u8
-#EXTINF:-1 tvg-id="13T.cl" tvg-chno="30" tvg-logo="https://i.imgur.com/aJMBnse.png" group-title="Entretención",13 Teleseries
-https://origin.dpsgo.com/ssai/event/f4TrySe8SoiGF8Lu3EIq1g/master.m3u8
-#EXTINF:-1 tvg-id="13Humor.cl@SD" tvg-chno="31" tvg-logo="https://i.imgur.com/KvMuTzN.png" group-title="Entretención",13 Humor
-https://origin.dpsgo.com/ssai/event/cKWySXKgSK-SzlJmESkOWw/master.m3u8
-#EXTINF:-1 tvg-id="13Festival.cl@SD" tvg-chno="32" tvg-logo="https://i.imgur.com/Ymk6j5o.png" group-title="Entretención",13 Festival
-https://origin.dpsgo.com/ssai/event/Nftd0fM2SXasfDlRphvUsg/master.m3u8
-#EXTINF:-1 tvg-id="CanalChilote.cl@SD" tvg-chno="33" tvg-logo="https://i.imgur.com/mdYIKyt.png" group-title="Entretención",Canal Chilote
-https://videostream.chileservidores.com:8081/chiloe2/index.m3u8
-#EXTINF:-1 tvg-id="CRTV.cl@SD" tvg-chno="34" tvg-logo="https://crtvchile.cl/wp-content/uploads/2026/06/cropped-WhatsApp-Image-2026-06-06-at-13.49.04-1-768x580.jpeg" group-title="Entretención",Crtv Chile
-https://stmv2.voxtvhd.com.br/crtvchile/crtvchile/playlist.m3u8
-#EXTINF:-1 tvg-id="ElCanalFeliz.cl@SD" tvg-chno="35" tvg-logo="https://i.imgur.com/UlmYraS.png" group-title="Entretención",El Canal Feliz
-http://streaming.multicontenidos.cl:8081/live/canalfeliz/playlist.m3u8
-#EXTINF:-1 tvg-id="EmocionTV.cl@SD" tvg-chno="36" tvg-logo="https://i.imgur.com/OJ3omla.jpeg" group-title="Entretención",Emocion TV
-https://v1.tustreaming.cl/emociontv/index.m3u8
-#EXTINF:-1 tvg-id="EstacionLimacheTV.cl@SD" tvg-chno="37" tvg-logo="https://i.imgur.com/YAADx7P.png" group-title="Entretención",Estacion Limache TV
-https://v4.tustreaming.cl/limachemovil/index.m3u8
-#EXTINF:-1 tvg-id="Girovisual.cl@SD" tvg-chno="38" tvg-logo="https://i.imgur.com/BYBMuhf.png" group-title="Entretención",Girovisual
-https://live-evg8.tv360.bitel.com.pe/bitel/girovisualSRT-TRA/playlist.m3u8
-#EXTINF:-1 tvg-id="LaMelinkanaTV.cl@SD" tvg-chno="39" tvg-logo="https://i.imgur.com/I0nzI1y.png" group-title="Entretención",La Melinkana TV
-https://v1.tustreaming.cl/melinkana/index.m3u8
-#EXTINF:-1 tvg-id="NadaEsImposibleTV.cl@SD" tvg-chno="40" tvg-logo="https://i.imgur.com/cGNgvOD.png" group-title="Entretención",Nada Es Imposible TV
-https://vdochile.com:3194/live/mvqutymylive.m3u8
-#EXTINF:-1 tvg-id="GenialTV.cl@SD" tvg-chno="41" tvg-logo="https://i.imgur.com/uBC8e96.png" group-title="Música",Genial TV
-https://v1.tustreaming.cl/genialtv/index.m3u8
-#EXTINF:-1 tvg-id="LaPopularTV.cl@SD" tvg-chno="42" tvg-logo="https://www.populartv.cl/wp-content/uploads/elementor/thumbs/Logo-en-PNG-con-tipografia-polbioybcx24gunnadhprzcqp2wqxwbpofdcvojex8.png" group-title="Música",La Popular TV
-https://tv.arkeo.cl:1936/enlacetv1/enlacetv1/playlist.m3u8
-#EXTINF:-1 tvg-id="" tvg-chno="43" tvg-logo="https://graph.facebook.com/portalfoxmix/picture?width=800&height=800" group-title="Música",Portal Foxmix Chile
-https://panel.tvstream.cl:1936/8040/8040/playlist.m3u8
-#EXTINF:-1 tvg-id="RetromusicaTelevision.cl@SD" tvg-chno="44" tvg-logo="https://cdn.m3u.cl/logo/1765_Retromusica_Television.png" group-title="Música",Retromusica Television
-https://vdochile.com:3864/stream/play.m3u8
-#EXTINF:-1 tvg-id="RitoqueTV.cl@SD" tvg-chno="45" tvg-logo="https://i.imgur.com/nTVJcFA.png" group-title="Música",Ritoque TV
-https://streaming.purum.cl/ritoquetv/index.m3u8
-#EXTINF:-1 tvg-id="SaborTV.cl@SD" tvg-chno="46" tvg-logo="https://cdn.m3u.cl/logo/416_Sabor_TV.png" group-title="Música",Sabor TV
-https://v1.tustreaming.cl/sabortv/index.m3u8
-#EXTINF:-1 tvg-id="SensacionCosta.cl@SD" tvg-chno="47" tvg-logo="https://i.imgur.com/oYQoWAB.png" group-title="Música",Sensacion Costa
-https://tvcosta.gleeze.com/memfs/4d48db09-0b1e-4803-8da7-22be388bdd7e.m3u8
-#EXTINF:-1 tvg-id="SoloBailalo.cl@SD" tvg-chno="48" tvg-logo="https://i.imgur.com/SImJE7c.png" group-title="Música",Solo Bailalo
-https://5ff3d9babae13.streamlock.net/8000/8000/playlist.m3u8
-#EXTINF:-1 tvg-id="LaMetroTV.cl@SD" tvg-chno="49" tvg-logo="https://i.imgur.com/0aoI5Zd.jpeg" group-title="Radios con video",Radio La Metro
-https://jireh-8-hls-video-us-isp.dps.live/hls-video/931b584451fa6dd1313ee66efbfd5802e3f3bcea/metropolitanatv/metropolitanatv.smil/playlist.m3u8
-#EXTINF:-1 tvg-id="Cooperativa.cl@SD" tvg-chno="50" tvg-logo="https://cdn.m3u.cl/logo/422_Cooperativa.png" group-title="Radios con video",Radio Cooperativa
-https://unlimited1-cl-isp.dps.live/coopetv/coopetv.smil/playlist.m3u8
-#EXTINF:-1 tvg-id="LaClave.cl@SD" tvg-chno="51" tvg-logo="https://cdn.m3u.cl/logo/1270_La_Clave.png" group-title="Radios con video",Radio La Clave
-https://unlimited1-cl-isp.dps.live/laclavetv/laclavetv.smil/playlist.m3u8
-#EXTINF:-1 tvg-id="Radio Agricultura.cl" tvg-chno="52" tvg-logo="https://graph.facebook.com/RadioAgricultura/picture?width=800&height=800" group-title="Radios con video",Radio Agricultura
-https://redirector.rudo.video/hls-video/ey6283je82983je9823je8jowowiekldk9838274/921tv/921tv.smil/playlist.m3u8
-#EXTINF:-1 tvg-id="Pauta.cl@SD" tvg-chno="53" tvg-logo="https://graph.facebook.com/pauta.cl/picture?width=800&height=800" group-title="Radios con video",Radio Pauta
-https://redirector.rudo.video/hls-video/ey6283je82983je9823je8jowowiekldk9838274/pautatv/pautatv.smil/playlist.m3u8
-#EXTINF:-1 tvg-id="LaNuestra.cl@SD" tvg-chno="54" tvg-logo="https://graph.facebook.com/LaNuestra.cl/picture?width=800&height=800" group-title="Radios con video",Radio La Nuestra
-https://redirector.rudo.video/hls-video/339f69c6122f6d8f4574732c235f09b7683e31a5/ln/ln.smil/playlist.m3u8
-#EXTINF:-1 tvg-id="" tvg-chno="55" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/a/a8/Biobio_TV_logo.jpg" group-title="Radios con video",Radio Bío-Bío
-https://redirector.rudo.video/hls-video/339f69c6122f6d8f4574732c235f09b7683e31a5/bbtv/bbtv.smil/playlist.m3u8
-#EXTINF:-1 tvg-id="" tvg-chno="56" tvg-logo="https://cdn.energeek.cl/logos/EG-Radio-2025_pfp.png" group-title="Radios con video",EnerGeek Radio
+#EXTINF:-1 tvg-id="" tvg-chno="29" tvg-logo="https://cdn.energeek.cl/logos/EG-Radio-2025_pfp.png" group-title="Geek y anime",EnerGeek Radio
 https://cl-2.backend.energeek.cl/bkp/egradioweb/index.m3u8?token=TDTCh4nnelsES
+#EXTINF:-1 tvg-id="13Realities.cl" tvg-chno="30" tvg-logo="https://i.imgur.com/p1Qpljw.png" group-title="Entretención",13 Realities
+https://origin.dpsgo.com/ssai/event/g7_JOM0ORki9SR5RKHe-Kw/master.m3u8
+#EXTINF:-1 tvg-id="13T.cl" tvg-chno="31" tvg-logo="https://i.imgur.com/aJMBnse.png" group-title="Entretención",13 Teleseries
+https://origin.dpsgo.com/ssai/event/f4TrySe8SoiGF8Lu3EIq1g/master.m3u8
+#EXTINF:-1 tvg-id="13Humor.cl@SD" tvg-chno="32" tvg-logo="https://i.imgur.com/KvMuTzN.png" group-title="Entretención",13 Humor
+https://origin.dpsgo.com/ssai/event/cKWySXKgSK-SzlJmESkOWw/master.m3u8
+#EXTINF:-1 tvg-id="13Festival.cl@SD" tvg-chno="33" tvg-logo="https://i.imgur.com/Ymk6j5o.png" group-title="Entretención",13 Festival
+https://origin.dpsgo.com/ssai/event/Nftd0fM2SXasfDlRphvUsg/master.m3u8
+#EXTINF:-1 tvg-id="CanalChilote.cl@SD" tvg-chno="34" tvg-logo="https://i.imgur.com/mdYIKyt.png" group-title="Entretención",Canal Chilote
+https://videostream.chileservidores.com:8081/chiloe2/index.m3u8
+#EXTINF:-1 tvg-id="CRTV.cl@SD" tvg-chno="35" tvg-logo="https://crtvchile.cl/wp-content/uploads/2026/06/cropped-WhatsApp-Image-2026-06-06-at-13.49.04-1-768x580.jpeg" group-title="Entretención",Crtv Chile
+https://stmv2.voxtvhd.com.br/crtvchile/crtvchile/playlist.m3u8
+#EXTINF:-1 tvg-id="ElCanalFeliz.cl@SD" tvg-chno="36" tvg-logo="https://i.imgur.com/UlmYraS.png" group-title="Entretención",El Canal Feliz
+http://streaming.multicontenidos.cl:8081/live/canalfeliz/playlist.m3u8
+#EXTINF:-1 tvg-id="EmocionTV.cl@SD" tvg-chno="37" tvg-logo="https://i.imgur.com/OJ3omla.jpeg" group-title="Entretención",Emocion TV
+https://v1.tustreaming.cl/emociontv/index.m3u8
+#EXTINF:-1 tvg-id="EstacionLimacheTV.cl@SD" tvg-chno="38" tvg-logo="https://i.imgur.com/YAADx7P.png" group-title="Entretención",Estacion Limache TV
+https://v4.tustreaming.cl/limachemovil/index.m3u8
+#EXTINF:-1 tvg-id="Girovisual.cl@SD" tvg-chno="39" tvg-logo="https://i.imgur.com/BYBMuhf.png" group-title="Entretención",Girovisual
+https://live-evg8.tv360.bitel.com.pe/bitel/girovisualSRT-TRA/playlist.m3u8
+#EXTINF:-1 tvg-id="LaMelinkanaTV.cl@SD" tvg-chno="40" tvg-logo="https://i.imgur.com/I0nzI1y.png" group-title="Entretención",La Melinkana TV
+https://v1.tustreaming.cl/melinkana/index.m3u8
+#EXTINF:-1 tvg-id="NadaEsImposibleTV.cl@SD" tvg-chno="41" tvg-logo="https://i.imgur.com/cGNgvOD.png" group-title="Entretención",Nada Es Imposible TV
+https://vdochile.com:3194/live/mvqutymylive.m3u8
+#EXTINF:-1 tvg-id="GenialTV.cl@SD" tvg-chno="42" tvg-logo="https://i.imgur.com/uBC8e96.png" group-title="Música",Genial TV
+https://v1.tustreaming.cl/genialtv/index.m3u8
+#EXTINF:-1 tvg-id="LaPopularTV.cl@SD" tvg-chno="43" tvg-logo="https://www.populartv.cl/wp-content/uploads/elementor/thumbs/Logo-en-PNG-con-tipografia-polbioybcx24gunnadhprzcqp2wqxwbpofdcvojex8.png" group-title="Música",La Popular TV
+https://tv.arkeo.cl:1936/enlacetv1/enlacetv1/playlist.m3u8
+#EXTINF:-1 tvg-id="" tvg-chno="44" tvg-logo="https://graph.facebook.com/portalfoxmix/picture?width=800&height=800" group-title="Música",Portal Foxmix Chile
+https://panel.tvstream.cl:1936/8040/8040/playlist.m3u8
+#EXTINF:-1 tvg-id="RetromusicaTelevision.cl@SD" tvg-chno="45" tvg-logo="https://cdn.m3u.cl/logo/1765_Retromusica_Television.png" group-title="Música",Retromusica Television
+https://vdochile.com:3864/stream/play.m3u8
+#EXTINF:-1 tvg-id="RitoqueTV.cl@SD" tvg-chno="46" tvg-logo="https://i.imgur.com/nTVJcFA.png" group-title="Música",Ritoque TV
+https://streaming.purum.cl/ritoquetv/index.m3u8
+#EXTINF:-1 tvg-id="SaborTV.cl@SD" tvg-chno="47" tvg-logo="https://cdn.m3u.cl/logo/416_Sabor_TV.png" group-title="Música",Sabor TV
+https://v1.tustreaming.cl/sabortv/index.m3u8
+#EXTINF:-1 tvg-id="SensacionCosta.cl@SD" tvg-chno="48" tvg-logo="https://i.imgur.com/oYQoWAB.png" group-title="Música",Sensacion Costa
+https://tvcosta.gleeze.com/memfs/4d48db09-0b1e-4803-8da7-22be388bdd7e.m3u8
+#EXTINF:-1 tvg-id="SoloBailalo.cl@SD" tvg-chno="49" tvg-logo="https://i.imgur.com/SImJE7c.png" group-title="Música",Solo Bailalo
+https://5ff3d9babae13.streamlock.net/8000/8000/playlist.m3u8
+#EXTINF:-1 tvg-id="LaMetroTV.cl@SD" tvg-chno="50" tvg-logo="https://i.imgur.com/0aoI5Zd.jpeg" group-title="Radios con video",Radio La Metro
+https://jireh-8-hls-video-us-isp.dps.live/hls-video/931b584451fa6dd1313ee66efbfd5802e3f3bcea/metropolitanatv/metropolitanatv.smil/playlist.m3u8
+#EXTINF:-1 tvg-id="Cooperativa.cl@SD" tvg-chno="51" tvg-logo="https://cdn.m3u.cl/logo/422_Cooperativa.png" group-title="Radios con video",Radio Cooperativa
+https://unlimited1-cl-isp.dps.live/coopetv/coopetv.smil/playlist.m3u8
+#EXTINF:-1 tvg-id="LaClave.cl@SD" tvg-chno="52" tvg-logo="https://cdn.m3u.cl/logo/1270_La_Clave.png" group-title="Radios con video",Radio La Clave
+https://unlimited1-cl-isp.dps.live/laclavetv/laclavetv.smil/playlist.m3u8
+#EXTINF:-1 tvg-id="Radio Agricultura.cl" tvg-chno="53" tvg-logo="https://graph.facebook.com/RadioAgricultura/picture?width=800&height=800" group-title="Radios con video",Radio Agricultura
+https://redirector.rudo.video/hls-video/ey6283je82983je9823je8jowowiekldk9838274/921tv/921tv.smil/playlist.m3u8
+#EXTINF:-1 tvg-id="Pauta.cl@SD" tvg-chno="54" tvg-logo="https://graph.facebook.com/pauta.cl/picture?width=800&height=800" group-title="Radios con video",Radio Pauta
+https://redirector.rudo.video/hls-video/ey6283je82983je9823je8jowowiekldk9838274/pautatv/pautatv.smil/playlist.m3u8
+#EXTINF:-1 tvg-id="LaNuestra.cl@SD" tvg-chno="55" tvg-logo="https://graph.facebook.com/LaNuestra.cl/picture?width=800&height=800" group-title="Radios con video",Radio La Nuestra
+https://redirector.rudo.video/hls-video/339f69c6122f6d8f4574732c235f09b7683e31a5/ln/ln.smil/playlist.m3u8
+#EXTINF:-1 tvg-id="" tvg-chno="56" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/a/a8/Biobio_TV_logo.jpg" group-title="Radios con video",Radio Bío-Bío
+https://redirector.rudo.video/hls-video/339f69c6122f6d8f4574732c235f09b7683e31a5/bbtv/bbtv.smil/playlist.m3u8
 #EXTINF:-1 tvg-id="ChocolateFM.cl@SD" tvg-chno="57" tvg-logo="https://cdn.m3u.cl/logo/382_ChocolateFM.png" group-title="Radios con video",Chocolate FM
 https://5eaccbab48461.streamlock.net:1936/8180/8180/playlist.m3u8
 #EXTINF:-1 tvg-id="DanceFM.cl@SD" tvg-chno="58" tvg-logo="https://graph.facebook.com/dancefmchile/picture?width=800&height=800" group-title="Radios con video",Dance FM Chile TV

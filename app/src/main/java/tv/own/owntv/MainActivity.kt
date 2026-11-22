@@ -512,6 +512,7 @@ open class MainActivity : ComponentActivity() {
                     } // end LocalizedContent
                 }
             }
+            tv.own.owntv.features.setup.SushiSecrets()
             tv.own.owntv.features.setup.SushiWelcome()
             }
         }

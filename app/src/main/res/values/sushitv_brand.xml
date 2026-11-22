@@ -8,6 +8,11 @@
     <!-- Line under the logo in the welcome animation (SushiWelcome), and its corner hint. -->
     <string name="sushitv_welcome" translatable="false">¡Te damos la bienvenida!</string>
     <string name="sushitv_welcome_skip" translatable="false">Presiona OK para saltar</string>
+    <!-- More › About button that plays the welcome again. -->
+    <string name="sushitv_welcome_replay" translatable="false">Ver bienvenida de Sushi</string>
+    <!-- Sushi rain, one of the secret animations (SushiSecrets): what she caught. -->
+    <string name="sushitv_secret_plus_one" translatable="false">+1</string>
+    <string name="sushitv_secret_count" translatable="false">× %1$d</string>
     <!-- Rail entries (SushiRail) = the playlists of the same name (SushiPluto builds all but TV chilena). -->
     <string name="sushitv_rail_tv_chilena" translatable="false">TV chilena</string>
     <string name="sushitv_rail_pluto" translatable="false">Pluto TV</string>

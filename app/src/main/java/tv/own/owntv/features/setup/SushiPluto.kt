@@ -81,7 +81,7 @@ object SushiPluto {
         Theme(PLUTO_FILE, R.string.sushitv_rail_pluto, plutoGroups = null),
         Theme(
             MUSIC_FILE, R.string.sushitv_rail_music,
-            chileGroups = setOf("Música", "Radios con video"), chileNames = setOf("13 Festival"),
+            chileGroups = setOf("Música", "Radios con video"), chileNames = setOf("13 Festival", "EnerGeek Radio"),
             plutoGroups = setOf("Música"), mundo = FromMundo.MUSIC,
         ),
         Theme(MUNDO_FILE, R.string.sushitv_rail_world, mundo = FromMundo.ALL),
