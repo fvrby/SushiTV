@@ -81,6 +81,17 @@ RULES = [
     (r'^la nuestra', 'Radio La Nuestra', 'Radios con video'),
     (r'^(radio )?biobio tv$|^radio bio ?bio', 'Radio Bío-Bío', 'Radios con video'),
 ]
+# Program guide (XMLTV). One URL per playlist: OwnTV stores it as the playlist's guide on sync.
+# iptv-epg.org refreshes daily and uses iptv-org style ids; EPG_IDS pins our channels to its ids.
+GUIDE_URL = 'https://iptv-epg.org/files/epg-cl.xml'
+EPG_IDS = {
+    'Mega': 'Mega.cl', 'Chilevisión': 'Chilevision.cl', 'Canal 13': 'Canal13.cl', 'La Red': 'LaRed.cl',
+    '24 Horas': '24Horas.cl', '13 Cultura': '13C.cl', 'UCV Televisión': 'UCVTV.cl', 'TV Senado': 'TVSenado.cl',
+    'Canal 9 Bío-Bío': 'Canal9BioBio.cl', 'TVU': 'TVU.cl', 'Radio Agricultura': 'RadioAgricultura.cl',
+    # Community lists give CHV Deportes Chilevisión's id, which would show Chilevisión's schedule on it.
+    'CHV Deportes': 'CHVDeportes.cl',
+}
+
 RULE_ORDER = {}
 for i, (_, name, _) in enumerate(RULES):
     RULE_ORDER.setdefault(name, i)
@@ -140,9 +151,9 @@ for c in cands:
     e['tvg'] = e['tvg'] or c.get('tvg')
 
 rows = sorted(entries.values(), key=lambda e: (GROUPS.index(e['group']), RULE_ORDER.get(e['name'], 999), ascii_low(e['name'])))
-lines = ['#EXTM3U']
+lines = [f'#EXTM3U url-tvg="{GUIDE_URL}"']
 for n, e in enumerate(rows, start=1):
-    attrs = f'tvg-id="{e["tvg"] or ""}" tvg-chno="{n}" tvg-logo="{png_logo(e["logos"])}" group-title="{e["group"]}"'
+    attrs = f'tvg-id="{EPG_IDS.get(e["name"], e["tvg"] or "")}" tvg-chno="{n}" tvg-logo="{png_logo(e["logos"])}" group-title="{e["group"]}"'
     if e['headers'].get('Referer'): attrs += f' http-referrer="{e["headers"]["Referer"]}"'
     if e['headers'].get('User-Agent'): attrs += f' http-user-agent="{e["headers"]["User-Agent"]}"'
     lines.append(f'#EXTINF:-1 {attrs},{e["name"]}')

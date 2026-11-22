@@ -98,6 +98,19 @@ python -I sushitv\tools\canales\curate.py $d app\src\main\assets\canales-chile.m
 Los nombres, grupos y canales excluidos se ajustan en `RULES` y `EXCLUDE` de `curate.py`. La lista
 actual entra como fuente prioritaria, así que sus nombres y logos se conservan.
 
+### Guía de programación (EPG)
+
+La cabecera de la lista (`#EXTM3U url-tvg=...`) apunta a la guía XMLTV de
+[iptv-epg.org](https://iptv-epg.org/files/epg-cl.xml), que se actualiza a diario con unos 3 días de
+programación. Al sincronizar la lista, la app la guarda como guía. `EPG_IDS` en `curate.py` fija el
+`tvg-id` de los 11 canales que cubre: Mega, Chilevisión, Canal 13, La Red, 24 Horas, 13 Cultura,
+UCV, TV Senado, Canal 9 Bío-Bío, TVU y Radio Agricultura.
+
+Otras guías con canales que esa no tiene (se pueden sumar en **Ajustes › Fuentes EPG**):
+`https://www.open-epg.com/files/chile2.xml` (NTV, TV+, T13 en vivo, CHV Noticias) y
+`https://epgshare01.online/epgshare01/epg_ripper_CL1.xml.gz` (TV Chile). Los canales regionales y las
+radios no tienen guía en ninguna fuente pública.
+
 - **Sin repo configurado:** la lista viaja dentro del APK. Para cambiarla hay que recompilar.
 - **Con `sushitv.githubRepo` configurado:** la app la lee desde GitHub y la refresca cada vez que
   se abre. Para arreglar un enlace basta con editar el archivo en GitHub.

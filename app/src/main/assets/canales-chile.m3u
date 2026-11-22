@@ -1,13 +1,13 @@
-#EXTM3U
+#EXTM3U url-tvg="https://iptv-epg.org/files/epg-cl.xml"
 #EXTINF:-1 tvg-id="Mega.cl" tvg-chno="1" tvg-logo="https://i.imgur.com/CYdWSDb.png" group-title="Nacionales",Mega
 https://unlimited2-cl-isp.dps.live/mega/mega.smil/playlist.m3u8
-#EXTINF:-1 tvg-id="ChileVision.cl" tvg-chno="2" tvg-logo="https://i.imgur.com/2Pu8yXf.png" group-title="Nacionales",Chilevisión
+#EXTINF:-1 tvg-id="Chilevision.cl" tvg-chno="2" tvg-logo="https://i.imgur.com/2Pu8yXf.png" group-title="Nacionales",Chilevisión
 https://redirector.rudo.video/hls-video/10b92cafdf3646cbc1e727f3dc76863621a327fd/chv/chv.smil/playlist.m3u8
 #EXTINF:-1 tvg-id="Canal13.cl" tvg-chno="3" tvg-logo="https://i.imgur.com/JIo1HBs.png" group-title="Nacionales",Canal 13
 https://redirector.dps.live/hls/13cl/playlist.m3u8
 #EXTINF:-1 tvg-id="TVPlus.cl" tvg-chno="4" tvg-logo="https://i.imgur.com/NtuZIEJ.png" group-title="Nacionales",TV+
 https://jireh-8-hls-video-us-isp.dps.live/hls-video/ey6283je82983je9823je8jowowiekldk9838274/tvmas/tvmas.smil/playlist.m3u8
-#EXTINF:-1 tvg-id="LaRed.cl@SD" tvg-chno="5" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/La_Red_Logotipo_2021.svg/256px-La_Red_Logotipo_2021.svg.png" group-title="Nacionales",La Red
+#EXTINF:-1 tvg-id="LaRed.cl" tvg-chno="5" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/La_Red_Logotipo_2021.svg/256px-La_Red_Logotipo_2021.svg.png" group-title="Nacionales",La Red
 https://ddycmnicl95kp.cloudfront.net/live/xmw27slnrnv8/master.m3u8
 #EXTINF:-1 tvg-id="24Horas.cl" tvg-chno="6" tvg-logo="https://i.imgur.com/0rF6Kub.png" group-title="Noticias",24 Horas
 https://mdstrm.com/live-stream-playlist/689ba606ecfe7915e1f8f741.m3u8
@@ -33,7 +33,7 @@ https://v2.tustreaming.cl/atacamanoticias/index.m3u8
 https://v1.tustreaming.cl/diarioelcentrotv/index.m3u8
 #EXTINF:-1 tvg-id="Turno.cl@SD" tvg-chno="17" tvg-logo="https://i.imgur.com/XuSeHBt.png" group-title="Noticias",Turno
 https://redirector.dps.live/hls/turno/playlist.m3u8
-#EXTINF:-1 tvg-id="ChileVision.cl" tvg-chno="18" tvg-logo="https://i.imgur.com/eWCXl6a.jpeg" group-title="Deportes",CHV Deportes
+#EXTINF:-1 tvg-id="CHVDeportes.cl" tvg-chno="18" tvg-logo="https://i.imgur.com/eWCXl6a.jpeg" group-title="Deportes",CHV Deportes
 https://redirector.rudo.video/hls-video/10b92cafdf3646cbc1e727f3dc76863621a327fd/chvdeportes/chvdeportes.smil/playlist.m3u8
 #EXTINF:-1 tvg-id="TurfMovil.cl@SD" tvg-chno="19" tvg-logo="https://i.imgur.com/TwIe4lK.png" group-title="Deportes",Turf Móvil
 https://tvturf4.janus.cl/playlist/stream.m3u8?d=w&id=
@@ -97,7 +97,7 @@ https://jireh-8-hls-video-us-isp.dps.live/hls-video/931b584451fa6dd1313ee66efbfd
 https://unlimited1-cl-isp.dps.live/coopetv/coopetv.smil/playlist.m3u8
 #EXTINF:-1 tvg-id="LaClave.cl@SD" tvg-chno="49" tvg-logo="https://cdn.m3u.cl/logo/1270_La_Clave.png" group-title="Radios con video",Radio La Clave
 https://unlimited1-cl-isp.dps.live/laclavetv/laclavetv.smil/playlist.m3u8
-#EXTINF:-1 tvg-id="AgriculturaTV.cl@SD" tvg-chno="50" tvg-logo="https://graph.facebook.com/RadioAgricultura/picture?width=800&height=800" group-title="Radios con video",Radio Agricultura
+#EXTINF:-1 tvg-id="RadioAgricultura.cl" tvg-chno="50" tvg-logo="https://graph.facebook.com/RadioAgricultura/picture?width=800&height=800" group-title="Radios con video",Radio Agricultura
 https://redirector.rudo.video/hls-video/ey6283je82983je9823je8jowowiekldk9838274/921tv/921tv.smil/playlist.m3u8
 #EXTINF:-1 tvg-id="Pauta.cl@SD" tvg-chno="51" tvg-logo="https://graph.facebook.com/pauta.cl/picture?width=800&height=800" group-title="Radios con video",Radio Pauta
 https://redirector.rudo.video/hls-video/ey6283je82983je9823je8jowowiekldk9838274/pautatv/pautatv.smil/playlist.m3u8
@@ -191,7 +191,7 @@ https://unlimited2-cl-isp.dps.live/uatv/uatv.smil/playlist.m3u8
 https://pantera1-100gb-cl-movistar.dps.live/campustv/campustv.smil/playlist.m3u8
 #EXTINF:-1 tvg-id="Canal5PuertoMontt.cl@SD" tvg-chno="96" tvg-logo="https://canal5.cl/wp/wp-content/uploads/2025/06/canal5-300x169.png" group-title="Regionales",Canal 5 Puerto Montt
 https://5ff3d9babae13.streamlock.net/aufymdjpjf/aufymdjpjf/playlist.m3u8
-#EXTINF:-1 tvg-id="Canal9BioBioTelevision.cl@SD" tvg-chno="97" tvg-logo="https://graph.facebook.com/BioBioTV/picture?width=800&height=800" group-title="Regionales",Canal 9 Bío-Bío
+#EXTINF:-1 tvg-id="Canal9BioBio.cl" tvg-chno="97" tvg-logo="https://graph.facebook.com/BioBioTV/picture?width=800&height=800" group-title="Regionales",Canal 9 Bío-Bío
 https://unlimited6-cl.dps.live/c9/c9.smil/c9/livestream1/chunks.m3u8
 #EXTINF:-1 tvg-id="CaracolaTV.cl@SD" tvg-chno="98" tvg-logo="https://i.imgur.com/QGvfqug.png" group-title="Regionales",Caracola TV
 https://wifispeed.trapemn.tv:1936/comunales/caracola-tv/chunks.m3u8
@@ -341,7 +341,7 @@ https://stmv8.samcast.com.br/raimundoanselmolimamororo1908/raimundoanselmolimamo
 https://v1.tustreaming.cl/tv5linares/index.m3u8
 #EXTINF:-1 tvg-id="TVOSanVicente.cl@SD" tvg-chno="171" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/2/23/Logotipo_TVO_San_Vicente.png" group-title="Regionales",TVO San Vicente
 https://5ff3d9babae13.streamlock.net/8014/8014/playlist.m3u8
-#EXTINF:-1 tvg-id="TVU.cl@SD" tvg-chno="172" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/0/0f/Logo_tvu.png" group-title="Regionales",TVU
+#EXTINF:-1 tvg-id="TVU.cl" tvg-chno="172" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/0/0f/Logo_tvu.png" group-title="Regionales",TVU
 https://unlimited6-cl.dps.live/tvu/tvu.smil/playlist.m3u8
 #EXTINF:-1 tvg-id="UniregionTV.cl@SD" tvg-chno="173" tvg-logo="https://i.imgur.com/VEO6aos.png" group-title="Regionales",Uniregion TV
 https://5ff3d9babae13.streamlock.net/ubyecbxnfd/ubyecbxnfd/playlist.m3u8
@@ -349,7 +349,7 @@ https://5ff3d9babae13.streamlock.net/ubyecbxnfd/ubyecbxnfd/playlist.m3u8
 https://v2.tustreaming.cl/utv/index.m3u8
 #EXTINF:-1 tvg-id="Wapp.cl@SD" tvg-chno="175" tvg-logo="https://graph.facebook.com/wapptv.cl/picture?width=800&height=800" group-title="Regionales",Wapp TV
 https://stream.wapptv.cl/video/index.m3u8
-#EXTINF:-1 tvg-id="TVSenado.cl@SD" tvg-chno="176" tvg-logo="" group-title="Institucionales",TV Senado
+#EXTINF:-1 tvg-id="TVSenado.cl" tvg-chno="176" tvg-logo="" group-title="Institucionales",TV Senado
 https://janus-tv-ply.senado.cl/playlist/playlist.m3u8
 #EXTINF:-1 tvg-id="Tevex.cl@SD" tvg-chno="177" tvg-logo="https://i.imgur.com/FnInQRd.png" group-title="Institucionales",Tevex
 https://v2.tustreaming.cl/tevex/index.m3u8
