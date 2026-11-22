@@ -5,6 +5,9 @@
     <!-- In-app wordmark (BrandLockup.Wordmark): "Sushi" in cream, "TV" in the accent colour. -->
     <string name="sushitv_word_sushi" translatable="false">Sushi</string>
     <string name="sushitv_word_tv" translatable="false">TV</string>
+    <!-- Program guide sources SushiGuides adds on its own (Settings › EPG sources). -->
+    <string name="sushitv_guide_chile_2" translatable="false">Guía Chile (nacionales)</string>
+    <string name="sushitv_guide_chile_1" translatable="false">Guía Chile (La Red, UCV, TVU)</string>
     <!-- Setup wizard card that imports the built-in playlist (assets/canales-chile.m3u). -->
     <string name="sushitv_chile_title" translatable="false">Canales de Chile</string>
     <string name="sushitv_chile_line" translatable="false">TV abierta chilena, lista para ver</string>

@@ -24,6 +24,7 @@ Exigido por la GPL-3.0 (sección 5a): estos son los archivos que SushiTV modific
 | 2026-11-21 | La foto original (`sushi-icon.png`) queda fuera del repo; solo se suben los recortes | `.gitignore` |
 | 2026-11-21 | Logo dentro de la app = Sushi (barra lateral, inicio, Acerca de) y texto "SushiTV" en vez de "owntv" | `ui/components/BrandLockup.kt`, `res/drawable-nodpi/sushitv_mark.png`, `res/values/sushitv_brand.xml` |
 | 2026-11-21 | Sin selector "Ícono de la app" ni "Logo en color de acento" (el ícono siempre es Sushi) | `SetupWizard.kt`, `SettingsScreen.kt` |
+| 2026-11-22 | Guías de programación de Chile (open-epg) configuradas solas al abrir la app | `features/setup/SushiGuides.kt`, `OwnTVApp.kt`, `res/values/sushitv_brand.xml` |
 | 2026-11-21 | Textos visibles "OwnTV" → "SushiTV" (salvo los que nombran servicios de OwnTV: metadatos compartidos y traducción) | `res/values*/sushitv_rename.xml`, generados con `sushitv/tools/rename-strings.py` |
 
 Las imágenes de marca se regeneran con `sushitv/tools/make-brand.ps1` a partir de `sushi-icon.png`
@@ -110,8 +111,10 @@ programación real (~1,5 días hacia adelante) y se renuevan a diario:
 `EPG_IDS` en `curate.py` fija el `tvg-id` de esos 14 canales exactamente como los escribe open-epg.
 **No usar iptv-epg.org**: para Chile solo entrega programas de relleno que dicen "No Data".
 
-OwnTV no descarga la guía solo: en la tele hay que agregarla una vez en **Configuración › Fuentes de
-EPG › Agregar fuente de EPG** y dejar **Actualización automática** en "al iniciar". TV Chile tiene guía
+OwnTV no descarga guías por su cuenta, así que SushiTV las configura sola
+(`features/setup/SushiGuides.kt`): unos segundos después de abrir la app borra las fuentes de
+iptv-epg.org, agrega las dos de open-epg con **Actualización automática: al iniciar** y las descarga.
+Corre una vez por `VERSION`; súbela si cambian las guías. TV Chile tiene guía
 en `https://epgshare01.online/epgshare01/epg_ripper_CL1.xml.gz` (id `TV.Chile.cl`). Los canales
 regionales y las radios no tienen guía en ninguna fuente pública.
 
