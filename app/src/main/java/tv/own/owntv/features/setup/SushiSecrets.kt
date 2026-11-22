@@ -91,6 +91,8 @@ fun SushiSecrets() {
 object SushiSecretPlayer {
     internal var plays by mutableIntStateOf(0)
     internal var current = 0
+    /** A scene is on screen (the Sushi asleep on the logo steps away meanwhile). */
+    internal var running by mutableStateOf(false)
     private var last = -1
 
     fun playRandom() {
@@ -137,6 +139,7 @@ private fun SecretRun(index: Int) {
         onDispose { lifecycle.removeObserver(observer); sound.release() }
     }
     LaunchedEffect(Unit) {
+        SushiSecretPlayer.running = true
         try {
             sound.start()
             var start = withFrameNanos { it }
@@ -148,6 +151,7 @@ private fun SecretRun(index: Int) {
             }
         } finally {
             sound.release()
+            SushiSecretPlayer.running = false
             visible = false
         }
     }

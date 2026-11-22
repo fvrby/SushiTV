@@ -47,7 +47,7 @@ function cat(x,y,s,o){ctx.save();ctx.translate(x,y);ctx.scale(s*(o.flip?-1:1),s*
   if(o.pose==='sit'){shadow(0,105);tailChain([55,-25],[175,-30+sw*10],[150+sw*40,-150],20,14);E(0,-95,88,100,C.white);bodyPatches(0,-95,88,100,0);paw(-32,-12,1);paw(32,-12,1);if(o.lift)paw(-30+o.lift*20,-12-o.lift*170,1)}
   else if(o.pose==='crouch'){shadow(10,135);const w=o.wig||0;tailChain([120,-80+w],[190,-120],[205+sw*25,-200],18,13);E(25+w*.3,-60+w,118,52,C.white,-0.12);bodyPatches(25+w*.3,-60+w,118,52,-0.12);paw(-115,-10,1);paw(-75,-8,1);hx=-105;hy=-100;hs=.58}
   else if(o.pose==='jump'){ctx.rotate(-0.22);tailChain([125,-70],[220,-95],[290,-80],18,12);E(0,-70,135,46,C.white);bodyPatches(0,-70,135,46,0);paw(-175,-55,1);paw(-155,-35,1);paw(120,-35,1);paw(140,-52,1);hx=-140;hy=-95;hs=.58}
-  else if(o.pose==='loaf'){shadow(0,175);const b=1+0.03*Math.sin(t*2.2);E(10,-62*b,160,68*b,C.white);bodyPatches(10,-62*b,160,68*b,0);tailChain([155,-25],[130,22],[-50,-4],17,13);hx=-112;hy=-95;hs=.58}
+  else if(o.pose==='loaf'){shadow(0,175);const b=1+0.03*Math.sin(t*2.2);E(10,-62*b,160,68*b,C.white);bodyPatches(10,-62*b,160,68*b,0);tailChain([155,-25],[130+sw*8,22],[-50+sw*12,-4-Math.abs(sw)*30],17,13);hx=-112;hy=-95;hs=.58}
   else if(o.pose==='stretch'){shadow(0,160);tailChain([140,-120],[200,-190],[175+sw*30,-260],17,12);E(30,-85,145,46,C.white,0.32);bodyPatches(30,-85,145,46,0.32);paw(-170,-10,1);paw(-125,-8,1);paw(130,-12,1);hx=-125;hy=-62;hs=.56}
   ctx.translate(hx,hy);ctx.rotate(ht);ctx.scale(hs,hs);face(o);ctx.restore()}
 function zz(x,y,k,a){ctx.save();ctx.globalAlpha*=a;ctx.translate(x,y);ctx.scale(k,k);ctx.strokeStyle='#E8EEF6';ctx.lineWidth=7;ctx.lineJoin='round';ctx.lineCap='round';ctx.beginPath();ctx.moveTo(-14,-14);ctx.lineTo(14,-14);ctx.lineTo(-14,14);ctx.lineTo(14,14);ctx.stroke();ctx.restore()}
@@ -118,4 +118,6 @@ function animRain(t){const G=930,CATCH=G-330;
 window.SECRETS=[{name:'La caja',f:animBox,d:7.2},{name:'Puntero láser',f:animLaser,d:7.2},{name:'La siesta',f:animNap,d:8.0},{name:'Lluvia de sushi',f:animRain,d:7.8}];
 window.drawSecret=(c,i,t)=>{ctx=c;const A=SECRETS[i];const a=seg(t,0,0.25)*(1-seg(t,A.d-0.5,A.d));const g=ctx.globalAlpha;ctx.globalAlpha=g*a;A.f(t);ctx.globalAlpha=g};
 window.RAIN={DROPS,FALL};
+// For siesta.html: Sushi asleep on the rail logo.
+window.SushiArt={cat:(c,x,y,sc,o)=>{ctx=c;cat(x,y,sc,o)},zz:(c,x,y,k,a)=>{ctx=c;zz(x,y,k,a)}};
 })();

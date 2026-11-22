@@ -38,11 +38,13 @@
 1	compiler	app/src/main/java/tv/own/owntv/OwnTVApp.kt	DEPRECATION
 1	log	app/src/main/java/tv/own/owntv/OwnTVApp.kt	SushiDefaults
 1	log	app/src/main/java/tv/own/owntv/OwnTVApp.kt	SushiGuides
+1	log	app/src/main/java/tv/own/owntv/OwnTVApp.kt	SushiListWatch
 1	log	app/src/main/java/tv/own/owntv/OwnTVApp.kt	SushiPluto
 1	log	app/src/main/java/tv/own/owntv/OwnTVApp.kt	defaults failed
 1	log	app/src/main/java/tv/own/owntv/OwnTVApp.kt	guide setup failed
 1	file-path	app/src/main/java/tv/own/owntv/OwnTVApp.kt	image_cache
 1	performance	app/src/main/java/tv/own/owntv/OwnTVApp.kt	koin-started
+1	log	app/src/main/java/tv/own/owntv/OwnTVApp.kt	list check failed
 1	log	app/src/main/java/tv/own/owntv/OwnTVApp.kt	playlist refresh failed
 3	empty	app/src/main/java/tv/own/owntv/core/i18n/LocalizedContent.kt	\0
 1	empty	app/src/main/java/tv/own/owntv/features/autostart/AutoStart.kt	\0
@@ -668,6 +670,11 @@
 1	url	app/src/main/java/tv/own/owntv/features/setup/SushiGuides.kt	iptv-epg.org
 1	preference-key	app/src/main/java/tv/own/owntv/features/setup/SushiGuides.kt	sushitv
 1	log	app/src/main/java/tv/own/owntv/features/setup/SushiGuides.kt	sushitv_guides
+1	protocol	app/src/main/java/tv/own/owntv/features/setup/SushiListWatch.kt	ETag
+1	protocol	app/src/main/java/tv/own/owntv/features/setup/SushiListWatch.kt	HEAD
+1	preference-key	app/src/main/java/tv/own/owntv/features/setup/SushiListWatch.kt	etag_
+1	preference-key	app/src/main/java/tv/own/owntv/features/setup/SushiListWatch.kt	sushitv
+1	log	app/src/main/java/tv/own/owntv/features/setup/SushiListWatch.kt	sushitv_list_changed
 3	protocol	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	\0
 1	protocol	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	#
 1	protocol	app/src/main/java/tv/own/owntv/features/setup/SushiPluto.kt	#EXTINF

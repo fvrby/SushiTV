@@ -391,26 +391,35 @@ private fun RailEdgeGlow(modifier: Modifier) {
 
 /**
  * The mark (50), with the wordmark beside it when the rail is open (`.brandrow`, 0 10 18 padding).
- * SushiTV: the mark can be focused — OK makes Sushi hop, holding OK plays a secret animation (SushiSecrets).
+ * SushiTV: Sushi sleeps on top of the mark (SushiNap) and wakes up when it is focused; OK makes the mark
+ * hop, holding OK plays a secret animation (SushiSecrets).
  */
 @Composable
 private fun ColumnScope.RailBrand(open: Boolean, namesAlpha: () -> Float) {
     val icon = rememberAppliedIcon()
     val hop = remember { androidx.compose.animation.core.Animatable(0f) }
     val scope = androidx.compose.runtime.rememberCoroutineScope()
+    var markFocused by remember { androidx.compose.runtime.mutableStateOf(false) }
     val mark = @Composable { modifier: Modifier ->
-        StageSurface(
-            onClick = { scope.launch { hop.snapTo(0f); hop.animateTo(1f, androidx.compose.animation.core.tween(450)) } },
-            onLongClick = { tv.own.owntv.features.setup.SushiSecretPlayer.playRandom() },
-            radius = 25.mpx,
-            modifier = modifier.size(50.mpx),
-            focusStyle = StageFocus.POSTER,
-            contentAlignment = Alignment.Center,
-        ) {
-            BrandMark(icon, 50.mpx, Modifier.graphicsLayer {
-                val s = 1f + 0.18f * kotlin.math.sin(hop.value * kotlin.math.PI.toFloat())
-                scaleX = s; scaleY = s
-            })
+        Box(modifier, contentAlignment = Alignment.TopCenter) {
+            StageSurface(
+                onClick = { scope.launch { hop.snapTo(0f); hop.animateTo(1f, androidx.compose.animation.core.tween(450)) } },
+                onLongClick = { tv.own.owntv.features.setup.SushiSecretPlayer.playRandom() },
+                radius = 25.mpx,
+                // Sushi (74×43) lies on the mark: her paws sit 6 below its top edge.
+                modifier = Modifier
+                    .onFocusChanged { markFocused = it.isFocused }
+                    .padding(top = 35.5.mpx)
+                    .size(50.mpx),
+                focusStyle = StageFocus.POSTER,
+                contentAlignment = Alignment.Center,
+            ) {
+                BrandMark(icon, 50.mpx, Modifier.graphicsLayer {
+                    val s = 1f + 0.18f * kotlin.math.sin(hop.value * kotlin.math.PI.toFloat())
+                    scaleX = s; scaleY = s
+                })
+            }
+            tv.own.owntv.features.setup.SushiNap(markFocused, Modifier.size(74.mpx, 43.mpx))
         }
     }
     if (!open) {
@@ -420,11 +429,12 @@ private fun ColumnScope.RailBrand(open: Boolean, namesAlpha: () -> Float) {
     Row(
         Modifier.padding(start = 10.mpx, end = 10.mpx, bottom = 12.mpx),
         horizontalArrangement = Arrangement.spacedBy(14.mpx),
-        verticalAlignment = Alignment.CenterVertically,
+        // Bottom: the wordmark lines up with the mark, not with Sushi asleep above it.
+        verticalAlignment = Alignment.Bottom,
     ) {
         mark(Modifier)
         // The wordmark, 130 wide (`.brandrow`, `wordmarkC()`).
-        Box(Modifier.graphicsLayer { alpha = namesAlpha() }) { Wordmark(130.mpx) }
+        Box(Modifier.height(50.mpx).graphicsLayer { alpha = namesAlpha() }, contentAlignment = Alignment.CenterStart) { Wordmark(130.mpx) }
     }
 }
 

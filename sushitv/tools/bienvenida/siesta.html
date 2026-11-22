@@ -1,0 +1,33 @@
+<!doctype html><meta charset="utf-8"><title>SushiTV — Sushi durmiendo en el logo</title>
+<style>body{font:14px system-ui;background:#0b0f13;color:#f3e6d6;margin:0;padding:16px}canvas{display:block;border-radius:12px}
+button{font:14px system-ui;margin:8px 6px 0 0;padding:6px 12px;border-radius:8px;border:1px solid #8B5A3C;background:#2a1f18;color:#f3e6d6;cursor:pointer}</style>
+<canvas id="c" width="960" height="540" style="width:960px;height:540px"></canvas>
+<button id="focus">Seleccionar el logo</button><button id="secret">Animación secreta</button>
+<script src="secretos.js"></script>
+<script>
+// Sushi asleep on the rail logo (SushiNap in SushiNap.kt). Box: 400×232 units, Sushi's ground at (210, 222).
+const cl=x=>Math.max(0,Math.min(1,x)),seg=(t,a,b)=>cl((t-a)/(b-a)),bump=(t,a,b)=>Math.sin(seg(t,a,b)*Math.PI);
+function napPose(t,awake){
+  const sw=Math.sin(t*1.1)*(0.5+0.5*Math.sin(t*0.37));
+  const ph=t%7.3,flick=-0.35*bump(ph,0,0.22)+0.12*bump(ph,0.22,0.4);
+  return {pose:'loaf',t,tailSw:sw,tilt:-0.12,open:awake,pd:1.1,lx:10*awake,ly:-2*awake,smile:awake<0.5,flick:flick*(1-awake)}}
+function drawNap(ctx,t,awake){SushiArt.cat(ctx,210,222,1,napPose(t,awake));
+  const ph=t%5.5,p=seg(ph,0,2.2);if(p>0&&p<1&&awake<0.5)SushiArt.zz(ctx,95+30*p,75-60*p,0.5+0.4*p,Math.sin(p*Math.PI)*(1-awake*2))}
+const cv=document.getElementById('c'),cx=cv.getContext('2d');let focused=false,awake=0,hide=0,hideUntil=0,last=performance.now();
+document.getElementById('focus').onclick=()=>{focused=!focused;document.getElementById('focus').textContent=focused?'Quitar la selección':'Seleccionar el logo'};
+document.getElementById('secret').onclick=()=>{hideUntil=performance.now()+7200};
+function frame(now){const dt=(now-last)/1000;last=now;const t=now/1000;
+  awake+=((focused?1:0)-awake)*Math.min(1,dt*5);hide+=((now<hideUntil?1:0)-hide)*Math.min(1,dt*6);
+  cx.setTransform(1,0,0,1,0,0);cx.fillStyle='#0b0f13';cx.fillRect(0,0,960,540);
+  cx.fillStyle='#16202a';cx.fillRect(200,0,760,540);cx.fillStyle='#e8eef3';cx.font='700 34px system-ui';cx.fillText('TV chilena',250,70);
+  for(let r=0;r<2;r++)for(let c=0;c<3;c++){cx.fillStyle='#22303c';cx.beginPath();cx.roundRect(250+c*230,110+r*200,210,170,16);cx.fill()}
+  cx.fillStyle='rgba(40,52,62,0.92)';cx.beginPath();cx.roundRect(30,24,140,490,50);cx.fill();
+  const lx=100,ly=150,lr=38;
+  if(focused){cx.strokeStyle='#FF7A59';cx.lineWidth=5;cx.beginPath();cx.arc(lx,ly,lr+7,0,7);cx.stroke()}
+  cx.fillStyle='#FF7A59';cx.beginPath();cx.arc(lx,ly,lr,0,7);cx.fill();cx.fillStyle='#FFF6EA';cx.font='800 30px system-ui';cx.textAlign='center';cx.fillText('logo',lx,ly+10);cx.textAlign='left';
+  for(let i=0;i<5;i++){cx.fillStyle=i==0?'#3b556a':'#2a3a47';cx.beginPath();cx.roundRect(62,215+i*62,76,50,16);cx.fill()}
+  // Sushi: 112×65 px above the logo, lying on its top edge.
+  const w=112,s=w/400;cx.save();cx.globalAlpha=1-hide;cx.translate(lx-w/2,ly-lr-65*0.82);cx.scale(s,s);drawNap(cx,t,awake);cx.restore();
+  requestAnimationFrame(frame)}
+requestAnimationFrame(frame);
+</script>

@@ -27,6 +27,7 @@ Exigido por la GPL-3.0 (sección 5a): estos son los archivos que SushiTV modific
 | 2026-11-22 | Menú: TV chilena, Pluto TV, Música y **Mundo** (canales gratis de otros países: anime, Japón y Corea, cine y series, y música por género que también sale en Música); fuera Películas y Series (sus canales siguen en las secciones de Pluto TV); ícono oficial de Pluto TV; EnerGeek (Fan, Retro y Radio) en TV chilena | `features/setup/SushiPluto.kt`, `SushiRail.kt`, `SushiChileSource.kt`, `assets/mundo.m3u`, `assets/canales-chile.m3u`, `res/values/sushitv_brand.xml`, `res/drawable-nodpi/sushitv_rail_*.png`, `sushitv/tools/make-rail-icons.ps1`, `sushitv/tools/marcas/pluto-tv.png`, `sushitv/tools/gratis/mundo*.py`, `envivo.py`, `sushitv/tools/canales/curate.py` |
 | 2026-11-22 | Íconos propios en el menú (bandera, Plutón, nota, claqueta, tele) y título de TV en vivo = nombre de la lista; arranque más liviano (guías cada 24 h, TV chilena cada 12 h, trabajo de SushiTV 60 s después de abrir, reintentos solo de lo que falta) | `sushitv/tools/make-rail-icons.ps1`, `res/drawable-nodpi/sushitv_rail_*.png`, `StageRail.kt`, `SushiRail.kt`, `live/LiveViewModel.kt`, `LiveStage.kt`, `LiveScreen.kt`, `SushiGuides.kt`, `SushiDefaults.kt`, `SushiChileSource.kt`, `SushiPluto.kt`, `OwnTVApp.kt` |
 | 2026-11-22 | Menú: TV chilena, Pluto TV, Música, Películas y Series (listas armadas en la tele); fuera Deportes, Guía y Películas/Series a pedido; bienvenida de ~4 s | `features/setup/SushiPluto.kt`, `SushiRail.kt`, `components/StageRail.kt`, `SushiWelcome.kt`, `res/values/sushitv_brand.xml` |
+| 2026-11-22 | Sushi duerme sobre el logo del menú (respira, mueve la cola y las orejas, despierta al seleccionar el logo); las listas de GitHub que cambian llegan a la tele al abrir la app (ETag), sin esperar 12 h | `features/setup/SushiNap.kt`, `SushiListWatch.kt`, `SushiPluto.kt`, `SushiCatArt.kt`, `components/StageRail.kt`, `OwnTVApp.kt`, `sushitv/tools/bienvenida/siesta.html` |
 | 2026-11-22 | Animaciones secretas: mantener OK sobre el logo de Sushi del menú lanza una de 4 al azar (la caja, puntero láser, la siesta, lluvia de sushi), flotando sobre la app y con sonido; la bienvenida espera a que la tele esté fluida (luz de "en espera") y se puede volver a ver en Acerca de; EnerGeek con su nombre oficial | `features/setup/SushiSecrets.kt`, `SushiCatArt.kt`, `SushiWelcome.kt`, `components/StageRail.kt` (RailBrand), `more/MorePages.kt` (AboutPage), `MainActivity.kt`, `res/raw/sushitv_secreto_*.wav`, `sushitv/tools/bienvenida/secretos.*`, `synth.js` |
 | 2026-11-22 | Bienvenida de 10 s dibujada con código (sin imágenes): tele retro que se enciende, Sushi con sus manchas reales, cola, corazón, "SushiTV" letra por letra y parpadeo lento; sonido de 10 s con música hecha en código y ruiditos reales de Sushi; cualquier botón la salta | `features/setup/SushiWelcome.kt`, `MainActivity.kt` (dispatchKeyEvent), `res/raw/sushitv_bienvenida.wav`, `res/values/sushitv_brand.xml`, `sushitv/tools/bienvenida/` |
 | 2026-11-22 | Avatares = fotos de los gatos (sin dibujos predefinidos ni silueta "sin avatar"); se mantiene "Tu propia foto" | `ui/components/OwnTVAvatar.kt`, `AvatarPickerDialog.kt`, `ProfileComponents.kt`, `SetupWizard.kt`, `StageRail.kt`, `res/drawable-nodpi/sushitv_avatar_*.png` (de `sushitv/tools/make-avatars.ps1`; fotos originales en `avatares/`, fuera de git) |
@@ -130,7 +131,10 @@ en `https://epgshare01.online/epgshare01/epg_ripper_CL1.xml.gz` (id `TV.Chile.cl
 regionales y las radios no tienen guía en ninguna fuente pública.
 
 - **Sin repo configurado:** la lista viaja dentro del APK. Para cambiarla hay que recompilar.
-- **Con `sushitv.githubRepo` configurado:** la app la lee desde GitHub y la refresca cada 12 h. Para arreglar un enlace basta con editar el archivo en GitHub.
+- **Con `sushitv.githubRepo` configurado:** la app la lee desde GitHub y la refresca cada 12 h; además, un
+  minuto después de abrirla y luego cada hora, pregunta a GitHub si la lista cambió (`SushiListWatch.kt`: una
+  petición HEAD con su ETag, sin descargar nada si no cambió) y, si cambió, la vuelve a sincronizar al tiro.
+  Lo mismo para Mundo y la lista de Pluto: si cambian, Pluto TV, Música y Mundo se rehacen. Para arreglar un enlace basta con editar el archivo en GitHub.
 
 Pendientes:
 - **TVN** (señal principal): su reproductor web exige un token que cambia.
@@ -246,6 +250,13 @@ Luego abre `http://localhost:8765/mix.html`: "Ver con sonido" muestra la animaci
 deja escuchar cada ruidito y elegir cuáles usar (`SEGS` en `mix.html`: archivo, inicio, fin y segundo
 en que suena). Para guardar la mezcla, en la consola del navegador: `await exportWav(22050)`; queda en
 `sushitv/tools/bienvenida/out/bienvenida.wav`, que se copia a `app/src/main/res/raw/sushitv_bienvenida.wav`.
+
+### Sushi durmiendo en el logo
+
+Sobre el logo del menú lateral duerme una Sushi chiquitita (`features/setup/SushiNap.kt`): respira, mueve la
+cola, a ratos mueve una oreja y le sale una "z". Al seleccionar el logo abre los ojos y te mira; mientras corre
+una animación secreta se va del logo. Se dibuja con código a 30 cuadros por segundo como máximo y solo
+mientras la app está en pantalla. Preview: `http://localhost:8765/siesta.html`.
 
 ### Animaciones secretas
 

@@ -168,9 +168,12 @@ class OwnTVApp : Application(), SingletonImageLoader.Factory, androidx.work.Conf
             // Live TV with its section column on screen; the Chilean playlist named "TV chilena".
             runCatching { tv.own.owntv.features.setup.SushiDefaults.apply(this@OwnTVApp) }
                 .onFailure { android.util.Log.w("SushiDefaults", "defaults failed", it) }
-            // "Películas y series" (Pluto TV): built on this TV from a fresh session, rebuilt before the
-            // session expires. Checked hourly; it only does work when the list is due.
+            // Pluto TV, Música and Mundo: built on this TV from a fresh Pluto session, rebuilt before the
+            // session expires. Checked hourly; it only does work when a list is due. Each pass first asks
+            // GitHub whether a list changed (one tiny request each), so edits there arrive right away.
             while (true) {
+                runCatching { tv.own.owntv.features.setup.SushiListWatch.check(this@OwnTVApp) }
+                    .onFailure { android.util.Log.w("SushiListWatch", "list check failed", it) }
                 runCatching { tv.own.owntv.features.setup.SushiPluto.refresh(this@OwnTVApp) }
                     .onFailure { android.util.Log.w("SushiPluto", "playlist refresh failed", it) }
                 kotlinx.coroutines.delay(60L * 60 * 1000)

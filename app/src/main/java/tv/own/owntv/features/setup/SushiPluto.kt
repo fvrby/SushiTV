@@ -92,6 +92,11 @@ object SushiPluto {
     /** A list this object builds (or 2026.11.4's fixed-URL Pluto list, migrated on the next refresh). */
     fun isPluto(url: String): Boolean = url.endsWith(PLUTO_FILE) || url.endsWith(SushiChileSource.FREE_TV)
 
+    /** A template changed on GitHub (SushiListWatch): rebuild every list on the next [refresh]. */
+    fun invalidate(context: Context) {
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().putLong(KEY_BUILT_AT, 0L).apply()
+    }
+
     /** Build or refresh the lists when missing, outdated or older than [MAX_AGE_MS]. Safe to call often. */
     suspend fun refresh(context: Context) = mutex.withLock {
         val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)

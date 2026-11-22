@@ -271,7 +271,7 @@ internal object SushiCatArt {
                     shadow(0f, 175f)
                     val b = 1f + 0.03f * sin(c.t * 2.2f)
                     body(10f, -62f * b, 160f, 68f * b)
-                    tail(155f, -25f, 130f, 22f, -50f, -4f, 17f, 13f)
+                    tail(155f, -25f, 130f + sw * 8f, 22f, -50f + sw * 12f, -4f - kotlin.math.abs(sw) * 30f, 17f, 13f)
                     hx = -112f; hy = -95f; hs = .58f
                 }
                 Pose.STRETCH -> {
