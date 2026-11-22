@@ -29,13 +29,20 @@ en la raíz (archivo local, no versionado).
 ## Compilar (Windows)
 
 Herramientas ya instaladas en este PC: JDK 25 en `C:\Users\bloai\.jdks\jdk-25.0.5.1+2` y el
-Android SDK en `C:\Users\bloai\AppData\Local\Android\Sdk` (referenciado desde `local.properties`).
+Android SDK en `C:\Users\bloai\Android\Sdk` (referenciado desde `local.properties`).
+
+Versión de lanzamiento, firmada con la llave de SushiTV (sube `VERSION_NAME` y `VERSION_CODE` en
+cada release; esquema `VERSION_CODE = mayor*10000 + menor*100 + parche`):
 
 ```powershell
-$env:JAVA_HOME = "C:\Users\bloai\.jdks\jdk-25.0.5.1+2"; .\gradlew.bat :app:assembleStandardDebug
+$env:JAVA_HOME = "C:\Users\bloai\.jdks\jdk-25.0.5.1+2"; $env:VERSION_NAME = "1.0.0"; $env:VERSION_CODE = "10000"; .\gradlew.bat :app:assembleStandardRelease
 ```
 
-El APK queda en `app\build\outputs\apk\standard\debug\`.
+El APK queda en `app\build\outputs\apk\standard\release\app-standard-release.apk`.
+
+La llave está en `C:\Users\bloai\.sushitv-signing\sushitv-release.jks` y su contraseña en
+`C:\Users\bloai\.gradle\gradle.properties` (líneas `owntv.*`). Ninguna de las dos va al repo.
+**Respáldalas:** sin esa llave no se puede actualizar la app instalada.
 
 ## Instalar en la tele
 
@@ -47,11 +54,11 @@ El APK queda en `app\build\outputs\apk\standard\debug\`.
 4. Desde el PC (la tele pedirá autorizar la conexión la primera vez):
 
 ```powershell
-& "$env:LOCALAPPDATA\Android\Sdk\platform-tools\adb.exe" connect 192.168.1.50:5555
+& "C:\Users\bloai\Android\Sdk\platform-tools\adb.exe" connect 192.168.1.50:5555
 ```
 
 ```powershell
-& "$env:LOCALAPPDATA\Android\Sdk\platform-tools\adb.exe" install -r app\build\outputs\apk\standard\debug\app-standard-debug.apk
+& "C:\Users\bloai\Android\Sdk\platform-tools\adb.exe" install -r app\build\outputs\apk\standard\release\app-standard-release.apk
 ```
 
 Reemplaza `192.168.1.50` por la IP de tu tele. En Google TV recientes, la depuración inalámbrica
