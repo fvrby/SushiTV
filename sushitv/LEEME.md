@@ -73,16 +73,43 @@ muestra su propio puerto y un código de emparejamiento (`adb pair IP:PUERTO`).
 
 ## Canales
 
-La lista está en `app/src/main/assets/canales-chile.m3u` (formato M3U estándar). Cada canal tiene
-el nombre, el logo, el grupo y la URL `.m3u8`. Fuentes: [Free-TV/IPTV](https://github.com/Free-TV/IPTV)
-y [Alplox/json-teles](https://github.com/Alplox/json-teles). Solo señales oficiales y gratuitas.
+La lista está en `app/src/main/assets/canales-chile.m3u` (formato M3U estándar): **190 canales** en
+12 grupos (Nacionales, Noticias, Deportes, Cultura e infantil, Entretención, Música, Radios con video,
+Universitarios, Regionales, Institucionales, Religiosos y Paisajes en vivo). Fuentes:
+[Alplox/json-teles](https://github.com/Alplox/json-teles), [iptv-org](https://github.com/iptv-org/iptv)
+y [Free-TV/IPTV](https://github.com/Free-TV/IPTV). Solo señales gratuitas; se descartan las
+retransmisiones desde IPs sueltas y los canales de pago (TCM, Nick Jr.) o extranjeros.
+
+### Refrescar la lista
+
+Los scripts de `sushitv/tools/canales/` rehacen todo el proceso: bajan las tres fuentes, prueban cada
+señal hasta descargar un trozo de video real, unen duplicados y agrupan.
+
+```powershell
+$d = "$env:TEMP\sushitv-canales"; New-Item -ItemType Directory -Force $d | Out-Null
+curl.exe -sSL https://raw.githubusercontent.com/Alplox/json-teles/main/countries/cl.json -o "$d\teles.json"
+curl.exe -sSL https://iptv-org.github.io/iptv/countries/cl.m3u -o "$d\iptvorg.m3u"
+curl.exe -sSL https://raw.githubusercontent.com/Free-TV/IPTV/master/lists/chile.md -o "$d\freetv.md"
+Copy-Item app\src\main\assets\canales-chile.m3u "$d\current.m3u"
+python -I sushitv\tools\canales\candidates.py $d; python -I sushitv\tools\canales\deepcheck.py $d
+python -I sushitv\tools\canales\curate.py $d app\src\main\assets\canales-chile.m3u --report
+```
+
+Los nombres, grupos y canales excluidos se ajustan en `RULES` y `EXCLUDE` de `curate.py`. La lista
+actual entra como fuente prioritaria, así que sus nombres y logos se conservan.
 
 - **Sin repo configurado:** la lista viaja dentro del APK. Para cambiarla hay que recompilar.
 - **Con `sushitv.githubRepo` configurado:** la app la lee desde GitHub y la refresca cada vez que
   se abre. Para arreglar un enlace basta con editar el archivo en GitHub.
 
-Pendientes: TVN (señal principal; su reproductor web exige un token que cambia), 13 Entretención
-y 13 Prime (no entregaron video en la última prueba).
+Pendientes:
+- **TVN** (señal principal): su reproductor web exige un token que cambia.
+- **13 Entretención, 13 Prime, CNN Chile, Deportes13:** sus URLs públicas no entregaron video.
+- **Solo por YouTube** (la app no reproduce YouTube en vivo): Cámara de Diputados, MegaDeportes,
+  MegaTiempo, Teleseries TVN, UES TV, 24 Horas Valparaíso, entre otros.
+- **Sin señal oficial en internet** (solo aparecen como retransmisiones desde IPs sueltas, que no se
+  incluyen): Mega 2, Mega Ficción, Meganoticias Ahora.
+- **Exclusivos de Zapping** (servicio de pago): los canales "Zapping" y "music" de Zapping.
 
 ## Actualizaciones por Wi-Fi
 
