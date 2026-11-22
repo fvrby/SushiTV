@@ -359,6 +359,8 @@ open class MainActivity : ComponentActivity() {
                 if ((activeProfileId ?: -1L) >= 0L) viewModel.checkAutoRefresh(includeStartup = true)
             }
 
+            // SushiTV: the app inside a Box so the pixel-art welcome can sit on top of it.
+            Box(Modifier.fillMaxSize()) {
             OwnTVTheme(
                 themeMode = themeMode,
                 accent = accent,
@@ -505,6 +507,8 @@ open class MainActivity : ComponentActivity() {
                     }
                     } // end LocalizedContent
                 }
+            }
+            tv.own.owntv.features.setup.SushiWelcome()
             }
         }
     }

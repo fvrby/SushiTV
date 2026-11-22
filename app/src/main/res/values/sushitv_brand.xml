@@ -5,6 +5,8 @@
     <!-- In-app wordmark (BrandLockup.Wordmark): "Sushi" in cream, "TV" in the accent colour. -->
     <string name="sushitv_word_sushi" translatable="false">Sushi</string>
     <string name="sushitv_word_tv" translatable="false">TV</string>
+    <!-- Line under the logo in the pixel-art welcome (SushiWelcome). -->
+    <string name="sushitv_welcome" translatable="false">¡Te damos la bienvenida!</string>
     <!-- Second playlist (Pluto TV, free and legal), built on the TV by SushiPluto. -->
     <string name="sushitv_free_tv_title" translatable="false">Películas y series</string>
     <!-- Rail entries that replace Live TV (SushiRail): each opens Live TV on one playlist. -->
